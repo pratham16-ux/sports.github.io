@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schedule — Stackly Sports Club</title>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/inner.css">
+</head>
+<body>
+<div class="cursor-glow"></div>
+
+<!-- HEADER -->
+<header class="site-header" id="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo-wrap">
+      <img src="https://wsrv.nl/?url=https://snabsolutions.in/wp-content/uploads/2026/02/stackly-snab-solutions.png&w=260&h=104&output=webp&q=80&fit=inside" alt="Stackly Sports Club">
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="classes.html">Sports</a>
+      <a href="coaches.html">Coaches</a>
+      <a href="schedule.html" class="active">Schedule</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-cta">
+      <a href="contact.html" class="btn btn-primary">Join Now</a>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<nav class="mobile-nav">
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="classes.html">Sports</a>
+  <a href="coaches.html">Coaches</a><a href="schedule.html">Schedule</a><a href="contact.html">Contact</a>
+  <a href="contact.html" class="btn btn-primary mobile-cta">Join Now</a>
+</nav>
+
+<!-- SECTION 1: HERO -->
+<section class="page-hero" style="--hero-img:url('https://wsrv.nl/?url=images.unsplash.com/photo-1546519638-68e109498ffc&w=1400&output=webp&q=70&fit=cover')">
+  <div class="page-hero-overlay"></div>
+  <div class="section-inner page-hero-content">
+    <div class="page-hero-eyebrow reveal">Plan Your Week</div>
+    <h1 class="page-hero-title reveal delay-1">CLASS<br><span class="stroke">SCHEDULE</span></h1>
+    <p class="page-hero-sub reveal delay-2">Find your slot, lock in your sessions, and build a training rhythm that fits your life — every day of the week.</p>
+    <div class="breadcrumb reveal delay-3"><a href="index.html">Home</a> <span>/</span> <span>Schedule</span></div>
+  </div>
+  <div class="page-hero-shapes">
+    <div class="hero-shape s1"></div>
+    <div class="hero-shape s2"></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <div class="ticker-item"><span>Morning Sessions</span><span class="dot"></span></div>
+    <div class="ticker-item"><span>Evening Sessions</span><span class="dot"></span></div>
+    <div class="ticker-item"><span>Weekend Specials</span><span class="dot"></span></div>
+    <div class="ticker-item"><span>Open Daily</span><span class="dot"></span></div>
+    <div class="ticker-item"><span>Morning Sessions</span><span class="dot"></span></div>
+    <div class="ticker-item"><span>Evening Sessions</span><span class="dot"></span></div>
+    <div class="ticker-item"><span>Weekend Specials</span><span class="dot"></span></div>
+    <div class="ticker-item"><span>Open Daily</span><span class="dot"></span></div>
+  </div>
+</div>
+
+<!-- SECTION 2: WEEKLY SCHEDULE TABS -->
+<section style="padding:100px 0;">
+  <div class="section-inner">
+    <div style="text-align:center;margin-bottom:50px;">
+      <div class="section-eyebrow reveal" style="justify-content:center;">Weekly Timetable</div>
+      <h2 class="section-title reveal delay-1">FIND YOUR <span class="accent">SLOT</span></h2>
+      <p class="section-sub reveal delay-2" style="margin:0 auto;">Tap a day to view sessions. Intensity dots indicate session difficulty.</p>
+    </div>
+
+    <div class="schedule-tabs reveal delay-3">
+      <div class="tabs">
+        <div class="tabs-nav">
+          <button class="active" data-tab="day-mon">Monday</button>
+          <button data-tab="day-tue">Tuesday</button>
+          <button data-tab="day-wed">Wednesday</button>
+          <button data-tab="day-thu">Thursday</button>
+          <button data-tab="day-fri">Friday</button>
+          <button data-tab="day-sat">Saturday</button>
+          <button data-tab="day-sun">Sunday</button>
+        </div>
+
+        <div class="tab-panel active" id="day-mon">
+          <table class="schedule-table">
+            <thead><tr><th>Time</th><th>Class</th><th>Coach</th><th>Intensity</th><th>Location</th></tr></thead>
+            <tbody>
+              <tr><td>06:00 – 07:00</td><td><div class="sched-class">Cricket Net Practice</div><div class="sched-coach">Beginner – Intermediate</div></td><td>Coach Arjun Rao</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Cricket Nets</td></tr>
+              <tr><td>07:00 – 08:00</td><td><div class="sched-class">Swimming – Endurance</div><div class="sched-coach">All levels</div></td><td>Coach Meera Iyer</td><td><span class="intensity-dot intensity-high"></span>High</td><td>Aqua Centre</td></tr>
+              <tr><td>17:00 – 18:00</td><td><div class="sched-class">Football Skills Drills</div><div class="sched-coach">Youth Academy</div></td><td>Coach Rohit Verma</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Turf Pitch</td></tr>
+              <tr><td>18:00 – 19:00</td><td><div class="sched-class">Strength & Conditioning</div><div class="sched-coach">Adults</div></td><td>Coach Sana Khan</td><td><span class="intensity-dot intensity-high"></span>High</td><td>Fitness Hall</td></tr>
+              <tr><td>19:00 – 20:00</td><td><div class="sched-class">Basketball Open Court</div><div class="sched-coach">All levels</div></td><td>Coach Vikram Shetty</td><td><span class="intensity-dot intensity-low"></span>Low</td><td>Court 1</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-panel" id="day-tue">
+          <table class="schedule-table">
+            <thead><tr><th>Time</th><th>Class</th><th>Coach</th><th>Intensity</th><th>Location</th></tr></thead>
+            <tbody>
+              <tr><td>06:00 – 07:00</td><td><div class="sched-class">Athletics – Sprint Training</div><div class="sched-coach">Intermediate</div></td><td>Coach Priya Nair</td><td><span class="intensity-dot intensity-high"></span>High</td><td>Athletics Track</td></tr>
+              <tr><td>07:00 – 08:00</td><td><div class="sched-class">Yoga & Mobility</div><div class="sched-coach">All levels</div></td><td>Coach Sana Khan</td><td><span class="intensity-dot intensity-low"></span>Low</td><td>Studio A</td></tr>
+              <tr><td>16:30 – 17:30</td><td><div class="sched-class">Tennis Coaching</div><div class="sched-coach">Beginner</div></td><td>Coach Vikram Shetty</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Tennis Court 2</td></tr>
+              <tr><td>18:00 – 19:00</td><td><div class="sched-class">Cricket Batting Lab</div><div class="sched-coach">Advanced</div></td><td>Coach Arjun Rao</td><td><span class="intensity-dot intensity-high"></span>High</td><td>Indoor Academy</td></tr>
+              <tr><td>19:30 – 20:30</td><td><div class="sched-class">Badminton Open Session</div><div class="sched-coach">All levels</div></td><td>Coach Meera Iyer</td><td><span class="intensity-dot intensity-low"></span>Low</td><td>Badminton Court 3</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-panel" id="day-wed">
+          <table class="schedule-table">
+            <thead><tr><th>Time</th><th>Class</th><th>Coach</th><th>Intensity</th><th>Location</th></tr></thead>
+            <tbody>
+              <tr><td>06:00 – 07:00</td><td><div class="sched-class">Swimming – Technique</div><div class="sched-coach">Beginner</div></td><td>Coach Meera Iyer</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Aqua Centre</td></tr>
+              <tr><td>17:00 – 18:00</td><td><div class="sched-class">Football Match Play</div><div class="sched-coach">Intermediate</div></td><td>Coach Rohit Verma</td><td><span class="intensity-dot intensity-high"></span>High</td><td>Turf Pitch</td></tr>
+              <tr><td>18:00 – 19:00</td><td><div class="sched-class">HIIT Conditioning</div><div class="sched-coach">Adults</div></td><td>Coach Sana Khan</td><td><span class="intensity-dot intensity-high"></span>High</td><td>Fitness Hall</td></tr>
+              <tr><td>19:00 – 20:00</td><td><div class="sched-class">Basketball Skills</div><div class="sched-coach">Youth</div></td><td>Coach Vikram Shetty</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Court 1</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-panel" id="day-thu">
+          <table class="schedule-table">
+            <thead><tr><th>Time</th><th>Class</th><th>Coach</th><th>Intensity</th><th>Location</th></tr></thead>
+            <tbody>
+              <tr><td>06:00 – 07:00</td><td><div class="sched-class">Athletics – Endurance Run</div><div class="sched-coach">All levels</div></td><td>Coach Priya Nair</td><td><span class="intensity-dot intensity-high"></span>High</td><td>Athletics Track</td></tr>
+              <tr><td>07:00 – 08:00</td><td><div class="sched-class">Recovery & Stretch</div><div class="sched-coach">All levels</div></td><td>Coach Sana Khan</td><td><span class="intensity-dot intensity-low"></span>Low</td><td>Recovery Suite</td></tr>
+              <tr><td>16:30 – 17:30</td><td><div class="sched-class">Tennis Coaching</div><div class="sched-coach">Intermediate</div></td><td>Coach Vikram Shetty</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Tennis Court 2</td></tr>
+              <tr><td>18:00 – 19:00</td><td><div class="sched-class">Cricket Net Practice</div><div class="sched-coach">All levels</div></td><td>Coach Arjun Rao</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Cricket Nets</td></tr>
+              <tr><td>19:30 – 20:30</td><td><div class="sched-class">Hockey Skills Session</div><div class="sched-coach">Beginner</div></td><td>Coach Rohit Verma</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Turf Pitch</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-panel" id="day-fri">
+          <table class="schedule-table">
+            <thead><tr><th>Time</th><th>Class</th><th>Coach</th><th>Intensity</th><th>Location</th></tr></thead>
+            <tbody>
+              <tr><td>06:00 – 07:00</td><td><div class="sched-class">Swimming – Endurance</div><div class="sched-coach">Advanced</div></td><td>Coach Meera Iyer</td><td><span class="intensity-dot intensity-high"></span>High</td><td>Aqua Centre</td></tr>
+              <tr><td>17:00 – 18:00</td><td><div class="sched-class">Football Skills Drills</div><div class="sched-coach">Youth Academy</div></td><td>Coach Rohit Verma</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Turf Pitch</td></tr>
+              <tr><td>18:00 – 19:00</td><td><div class="sched-class">Strength & Conditioning</div><div class="sched-coach">Adults</div></td><td>Coach Sana Khan</td><td><span class="intensity-dot intensity-high"></span>High</td><td>Fitness Hall</td></tr>
+              <tr><td>19:00 – 20:00</td><td><div class="sched-class">Basketball Open Court</div><div class="sched-coach">All levels</div></td><td>Coach Vikram Shetty</td><td><span class="intensity-dot intensity-low"></span>Low</td><td>Court 1</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-panel" id="day-sat">
+          <table class="schedule-table">
+            <thead><tr><th>Time</th><th>Class</th><th>Coach</th><th>Intensity</th><th>Location</th></tr></thead>
+            <tbody>
+              <tr><td>08:00 – 09:30</td><td><div class="sched-class">Weekend Cricket League</div><div class="sched-coach">All levels</div></td><td>Coach Arjun Rao</td><td><span class="intensity-dot intensity-high"></span>High</td><td>Cricket Nets</td></tr>
+              <tr><td>09:00 – 10:00</td><td><div class="sched-class">Family Swim Hour</div><div class="sched-coach">All ages</div></td><td>Coach Meera Iyer</td><td><span class="intensity-dot intensity-low"></span>Low</td><td>Aqua Centre</td></tr>
+              <tr><td>10:00 – 11:30</td><td><div class="sched-class">5-a-side Football Tournament</div><div class="sched-coach">Intermediate</div></td><td>Coach Rohit Verma</td><td><span class="intensity-dot intensity-high"></span>High</td><td>5-a-side Ground</td></tr>
+              <tr><td>16:00 – 17:00</td><td><div class="sched-class">Tennis Doubles Clinic</div><div class="sched-coach">All levels</div></td><td>Coach Vikram Shetty</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Tennis Court 1</td></tr>
+              <tr><td>17:00 – 18:00</td><td><div class="sched-class">Sport Science Assessments</div><div class="sched-coach">By appointment</div></td><td>Coach Sana Khan</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Science Lab</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-panel" id="day-sun">
+          <table class="schedule-table">
+            <thead><tr><th>Time</th><th>Class</th><th>Coach</th><th>Intensity</th><th>Location</th></tr></thead>
+            <tbody>
+              <tr><td>07:00 – 08:00</td><td><div class="sched-class">Sunday Long Run</div><div class="sched-coach">All levels</div></td><td>Coach Priya Nair</td><td><span class="intensity-dot intensity-high"></span>High</td><td>Athletics Track</td></tr>
+              <tr><td>08:00 – 09:00</td><td><div class="sched-class">Recovery Yoga</div><div class="sched-coach">All levels</div></td><td>Coach Sana Khan</td><td><span class="intensity-dot intensity-low"></span>Low</td><td>Studio A</td></tr>
+              <tr><td>09:00 – 10:30</td><td><div class="sched-class">Open Basketball Run</div><div class="sched-coach">All levels</div></td><td>Coach Vikram Shetty</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Court 1</td></tr>
+              <tr><td>10:30 – 12:00</td><td><div class="sched-class">Junior Multi-Sport Camp</div><div class="sched-coach">Ages 6–12</div></td><td>Coach Rohit Verma</td><td><span class="intensity-dot intensity-med"></span>Medium</td><td>Turf Pitch</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: NOTES / INFO -->
+<section style="padding:0 0 100px; background:var(--dark2); padding-top:100px;">
+  <div class="section-inner">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div class="section-eyebrow reveal" style="justify-content:center;">Good to Know</div>
+      <h2 class="section-title reveal delay-1">SCHEDULE <span class="accent">NOTES</span></h2>
+    </div>
+    <div class="facility-list" style="max-width:800px;margin:0 auto;">
+      <div class="facility-item reveal delay-1"><span class="fi-icon">📲</span><div><strong>Book via App</strong><p>Reserve your spot up to 7 days in advance through the Stackly member app.</p></div></div>
+      <div class="facility-item reveal delay-2"><span class="fi-icon">⏱️</span><div><strong>Arrive Early</strong><p>Please arrive 10 minutes before your session for warm-up and check-in.</p></div></div>
+      <div class="facility-item reveal delay-3"><span class="fi-icon">🔁</span><div><strong>Cancellation Policy</strong><p>Cancel at least 2 hours ahead to free up your slot for other members.</p></div></div>
+      <div class="facility-item reveal delay-4"><span class="fi-icon">🎉</span><div><strong>Public Holidays</strong><p>Holiday schedules may vary — check the app or front desk for updates.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: CTA -->
+<section style="padding:100px 0; background:var(--primary); position:relative; overflow:hidden;">
+  <div class="cta-band-bg"></div>
+  <div class="section-inner" style="position:relative;z-index:2;text-align:center;">
+    <div class="section-eyebrow reveal" style="color:rgba(255,255,255,0.7);justify-content:center;">Ready to Train?</div>
+    <h2 style="font-family:var(--font-display);font-size:clamp(48px,8vw,100px);line-height:0.9;color:var(--white);margin-bottom:24px;" class="reveal delay-1">PICK YOUR<br>SLOT TODAY</h2>
+    <p style="color:rgba(255,255,255,0.8);font-size:18px;margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;" class="reveal delay-2">Join now and reserve your first session free of charge.</p>
+    <a href="contact.html" class="btn reveal delay-3" style="background:var(--white);color:var(--primary);font-size:16px;padding:16px 48px;">Join Stackly Today →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="logo-wrap"><img src="https://wsrv.nl/?url=https://snabsolutions.in/wp-content/uploads/2026/02/stackly-snab-solutions.png&w=260&h=104&output=webp&q=80&fit=inside" alt="Stackly"></a>
+        <p>Train. Compete. Conquer. Stackly Sports Club is where champions are forged — in body, mind, and spirit.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn">📷</a><a href="#" class="social-btn">f</a><a href="#" class="social-btn">𝕏</a><a href="#" class="social-btn">▶</a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="classes.html">Sports</a></li><li><a href="coaches.html">Coaches</a></li><li><a href="schedule.html">Schedule</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Sports</h4><ul><li><a href="classes.html">Cricket</a></li><li><a href="classes.html">Football</a></li><li><a href="classes.html">Basketball</a></li><li><a href="classes.html">Tennis</a></li><li><a href="classes.html">Swimming</a></li><li><a href="classes.html">Athletics</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="#">📍 123 Champion Ave, Hubballi</a></li><li><a href="tel:+918001234567">📞 +91 800 123 4567</a></li><li><a href="mailto:info@stackly.in">✉ info@stackly.in</a></li><li><a href="#">🕐 Mon–Sat: 5am–11pm</a></li><li><a href="#">🕐 Sunday: 7am–9pm</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Stackly Sports Club. All rights reserved.</p>
+      <div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Cookie Policy</a></div>
+    </div>
+  </div>
+</footer>
+<script src="/js/main.js"></script>
+</body>
+</html>
