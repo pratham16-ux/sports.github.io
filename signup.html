@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up — Stackly Access Portal</title>
+<link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+<div class="auth-shell">
+
+  <!-- LEFT: LIVE SCOREBOARD VISUAL -->
+  <aside class="auth-visual" style="--visual-img:url('https://wsrv.nl/?url=images.unsplash.com/photo-1459865264687-595d652de67e&w=900&h=1300&output=webp&q=55&fit=cover')">
+    <div class="visual-overlay"></div>
+    <div class="visual-content">
+      <a href="index.html" class="auth-logo">
+        <img src="https://wsrv.nl/?url=https://snabsolutions.in/wp-content/uploads/2026/02/stackly-snab-solutions.png&w=260&h=104&output=webp&q=80&fit=inside"
+         alt="Stackly Sports Club">
+      </a>
+
+      <div class="scoreboard">
+        <div class="scoreboard-label">Live — Training Floor</div>
+        <div class="scoreboard-clock" id="liveClock">00:00:00</div>
+        <div class="scoreboard-divider"></div>
+        <div class="scoreboard-row"><span>Next Session</span><span id="countdown">--:--:--</span></div>
+        <div class="scoreboard-stats">
+          <div class="stat"><span class="stat-value">42</span><span class="stat-label">Coaches</span></div>
+          <div class="stat"><span class="stat-value">12</span><span class="stat-label">Sports</span></div>
+          <div class="stat"><span class="stat-value">2.4K</span><span class="stat-label">Members</span></div>
+        </div>
+      </div>
+
+      <p class="visual-quote">Your first week is free. <span>Lace up</span> and claim your spot on the roster.</p>
+    </div>
+
+    <div class="visual-ticker">
+      <div class="ticker-track">
+        <span><span class="dot">●</span> First-week trial on every sport</span>
+        <span><span class="dot">●</span> Free facility tour with a coach</span>
+        <span><span class="dot">●</span> 2,400+ members and counting</span>
+        <span><span class="dot">●</span> No long-term contracts, ever</span>
+        <span><span class="dot">●</span> First-week trial on every sport</span>
+        <span><span class="dot">●</span> Free facility tour with a coach</span>
+        <span><span class="dot">●</span> 2,400+ members and counting</span>
+        <span><span class="dot">●</span> No long-term contracts, ever</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT: SIGN UP FORM -->
+  <main class="auth-form-panel">
+    <div class="auth-form-wrap">
+
+      <div class="auth-form-head">
+        <div class="auth-eyebrow">// Access Portal</div>
+        <h1>JOIN THE<br>ROSTER</h1>
+        <p>Create your account to book sessions, follow your stats, and train with the Stackly squad.</p>
+      </div>
+
+      <!-- TWO SIGN-UP OPTIONS: MEMBER / COACH -->
+      <div class="role-toggle" role="tablist" aria-label="Create account as">
+        <div class="role-indicator"></div>
+        <button type="button" class="role-btn" data-role="member" role="tab" aria-selected="true">Member</button>
+        <button type="button" class="role-btn" data-role="coach" role="tab" aria-selected="false">Coach</button>
+      </div>
+
+      <form class="auth-form" data-success="Account created — check your email to confirm…">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" name="fname" placeholder="Riya" required>
+          </div>
+          <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="lname" placeholder="Kulkarni" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="+91 00000 00000">
+          </div>
+        </div>
+
+        <!-- MEMBER-ONLY: sport selection -->
+        <div class="form-group member-only">
+          <label>Sports You're Interested In</label>
+          <div class="sport-chips">
+            <button type="button" class="sport-chip">Cricket</button>
+            <button type="button" class="sport-chip">Football</button>
+            <button type="button" class="sport-chip">Basketball</button>
+            <button type="button" class="sport-chip">Tennis</button>
+            <button type="button" class="sport-chip">Swimming</button>
+            <button type="button" class="sport-chip">Athletics</button>
+            <button type="button" class="sport-chip">Badminton</button>
+            <button type="button" class="sport-chip">Hockey</button>
+          </div>
+        </div>
+
+        <!-- COACH-ONLY: specialization + staff ID -->
+        <div class="form-grid-2 coach-only" hidden>
+          <div class="form-group">
+            <label for="specialization">Primary Sport</label>
+            <select id="specialization" name="specialization">
+              <option value="">Select a sport</option>
+              <option>Cricket</option>
+              <option>Football</option>
+              <option>Basketball</option>
+              <option>Tennis</option>
+              <option>Swimming</option>
+              <option>Athletics</option>
+              <option>Badminton</option>
+              <option>Hockey</option>
+              <option>Fitness & Conditioning</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="experience">Years Coaching</label>
+            <input type="number" id="experience" name="experience" min="0" placeholder="e.g. 5">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <input type="password" id="password" name="password" placeholder="Create a password" required>
+            <button type="button" class="toggle-pass" aria-label="Show password">👁</button>
+          </div>
+          <div class="strength-meter">
+            <div class="strength-seg"></div>
+            <div class="strength-seg"></div>
+            <div class="strength-seg"></div>
+            <div class="strength-seg"></div>
+          </div>
+          <div class="strength-label">Use 6+ characters</div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm">Confirm Password</label>
+          <div class="input-wrap">
+            <input type="password" id="confirm" name="confirm" placeholder="Re-enter your password" required>
+            <button type="button" class="toggle-pass" aria-label="Show password">👁</button>
+          </div>
+        </div>
+
+        <label class="terms-row">
+          <input type="checkbox" name="terms" required>
+          I agree to Stackly's <a href="#" class="link-accent">Terms of Use</a> and <a href="#" class="link-accent">Privacy Policy</a>, and consent to being contacted about my membership.
+        </label>
+
+        <button type="submit" class="btn-primary btn-block">Create Account as <span class="role-name">Member</span></button>
+      </form>
+
+      <div class="divider"><span>or sign up with</span></div>
+      <div class="social-row">
+        <button type="button" class="btn-social"><span class="social-icon">G</span> Google</button>
+        <button type="button" class="btn-social"><span class="social-icon">f</span> Facebook</button>
+      </div>
+
+      <p class="auth-switch">Already a member? <a href="signin.html" class="link-accent">Sign in</a></p>
+    </div>
+  </main>
+
+</div>
+
+<script src="auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-role="member">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — Stackly Sports Club</title>
+<link rel="stylesheet" href="auth.css">
+</head>
+<body>
+<div class="auth-shell">
+
+  <!-- LEFT: Visual Panel -->
+  <div class="auth-visual" style="--visual-img:url('https://wsrv.nl/?url=images.unsplash.com/photo-1593079831268-3381b0db4a77&w=900&output=webp&q=65&fit=cover')">
+    <div class="visual-overlay"></div>
+    <div class="visual-content">
+     <div class="auth-logo">
+    <img src="https://wsrv.nl/?url=https://snabsolutions.in/wp-content/uploads/2026/02/stackly-snab-solutions.png&w=260&h=104&output=webp&q=80&fit=inside"
+         alt="Stackly Sports Club">
+</div>
+      <div class="scoreboard">
+        <div class="scoreboard-label">LIVE SCOREBOARD</div>
+        <div class="scoreboard-clock" id="liveClock">00:00:00</div>
+        <div class="scoreboard-divider"></div>
+        <div class="scoreboard-row">
+          <span>NEXT SESSION IN</span>
+          <span id="countdown">—</span>
+        </div>
+        <div class="scoreboard-stats">
+          <div class="stat"><div class="stat-value">2,480</div><div class="stat-label">Members</div></div>
+          <div class="stat"><div class="stat-value">38</div><div class="stat-label">Coaches</div></div>
+          <div class="stat"><div class="stat-value">9</div><div class="stat-label">Sports</div></div>
+        </div>
+      </div>
+
+      <div class="visual-quote">
+        Champions aren't born in the gym.<br>They're forged<span> in it.</span>
+      </div>
+    </div>
+    <div class="visual-ticker">
+      <div class="ticker-track">
+        <span>Cricket</span><span class="dot">◆</span>
+        <span>Football</span><span class="dot">◆</span>
+        <span>Basketball</span><span class="dot">◆</span>
+        <span>Tennis</span><span class="dot">◆</span>
+        <span>Swimming</span><span class="dot">◆</span>
+        <span>Athletics</span><span class="dot">◆</span>
+        <span>Badminton</span><span class="dot">◆</span>
+        <span>Hockey</span><span class="dot">◆</span>
+        <span>Cricket</span><span class="dot">◆</span>
+        <span>Football</span><span class="dot">◆</span>
+        <span>Basketball</span><span class="dot">◆</span>
+        <span>Tennis</span><span class="dot">◆</span>
+        <span>Swimming</span><span class="dot">◆</span>
+        <span>Athletics</span><span class="dot">◆</span>
+        <span>Badminton</span><span class="dot">◆</span>
+        <span>Hockey</span><span class="dot">◆</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form Panel -->
+  <div class="auth-form-panel">
+    <div class="auth-form-wrap">
+      <div class="auth-form-head">
+        <div class="auth-eyebrow">Access Portal</div>
+        <h1>WELCOME<br>BACK</h1>
+        <p>Sign in as a <span class="role-name">MEMBER</span> to access your training hub.</p>
+      </div>
+
+      <!-- Role Toggle -->
+      <div class="role-toggle">
+        <div class="role-indicator"></div>
+        <button class="role-btn active" data-role="member">⚡ Member</button>
+        <button class="role-btn" data-role="coach">🎯 Coach</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form class="auth-form" data-success="Access granted — loading your dashboard…" onsubmit="handleSignIn(event)">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" class="toggle-pass" aria-label="Show password">👁</button>
+          </div>
+        </div>
+        <div class="form-row-between">
+          <label class="checkbox">
+            <input type="checkbox" name="remember"> Remember me
+          </label>
+          <a href="404.html" class="link-muted">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn-primary btn-block">Sign In →</button>
+      </form>
+
+      <div class="divider">or continue with</div>
+      <div class="social-row">
+        <button class="btn-social"><span class="social-icon"> <a href="404.html"></span> Google</button></a> 
+        <button class="btn-social"><span class="social-icon"> <a href="404.html"> 📘</span> Facebook</button></a> 
+      </div>
+
+      <div class="auth-switch">
+        New to Stackly? <a href="signup.html" class="link-accent">Create a free account →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="auth.js"></script>
+<script>
+  // Demo: redirect to dashboards on sign in
+  function handleSignIn(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const role = document.documentElement.getAttribute('data-role');
+    if (!email) {
+      document.getElementById('email').classList.add('shake');
+      setTimeout(() => document.getElementById('email').classList.remove('shake'), 500);
+      return;
+    }
+    // Store email + role in sessionStorage for dashboard
+    sessionStorage.setItem('sc_email', email);
+    sessionStorage.setItem('sc_role', role);
+    sessionStorage.setItem('sc_name', email.split('@')[0].replace(/[._]/g,' ').replace(/\b\w/g,c=>c.toUpperCase()));
+    showToastAndRedirect(role === 'coach' ? 'coach-dashboard.html' : 'member-dashboard.html');
+  }
+
+  function showToastAndRedirect(url) {
+    let toast = document.createElement('div');
+    toast.className = 'auth-toast';
+    toast.innerHTML = '<span class="dot"></span><span class="toast-msg">Access granted — loading dashboard…</span>';
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('show'));
+    setTimeout(() => { window.location.href = url; }, 1600);
+  }
+</script>
+</body>
+</html>

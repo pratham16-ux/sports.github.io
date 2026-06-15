@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coach Dashboard — Stackly Sports Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #14110E;
+  --ink-2:      #1B1611;
+  --ink-3:      #241E18;
+  --ink-4:      #2E2620;
+  --line:       rgba(232,71,43,0.14);
+  --line-strong:rgba(232,71,43,0.28);
+  --red:        #E8472B;
+  --red-dim:    #A8331E;
+  --red-glow:   rgba(232,71,43,0.22);
+  --amber:      #FFB627;
+  --green:      #3CCB7F;
+  --chalk:      #F6F1E7;
+  --muted:      #9C9088;
+  --muted-2:    #6E655E;
+  --accent:     var(--red);
+  --accent-dim: var(--red-dim);
+  --accent-glow:var(--red-glow);
+  --sidebar-w:  260px;
+  --header-h:   68px;
+  --font-display:'Big Shoulders Display',sans-serif;
+  --font-body:  'Space Grotesk',sans-serif;
+  --font-mono:  'Share Tech Mono',monospace;
+  --radius:     8px;
+  --radius-lg:  14px;
+  --t:          0.25s cubic-bezier(0.4,0,0.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--ink);color:var(--chalk);line-height:1.6;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+ul{list-style:none}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--ink-2)}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
+
+.dash-shell{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{
+  width:var(--sidebar-w);background:var(--ink-2);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;
+  z-index:200;transition:transform var(--t);
+}
+.sidebar-logo{
+  padding:24px 24px 20px;border-bottom:1px solid var(--line);
+  font-family:var(--font-display);font-weight:800;font-size:24px;letter-spacing:0.1em;color:var(--chalk);
+}
+.sidebar-logo span{color:var(--red)}
+.sidebar-user{
+  padding:20px 24px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:12px;
+}
+.user-avatar{
+  width:40px;height:40px;border-radius:50%;background:var(--red);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--chalk);flex-shrink:0;
+}
+.user-info{overflow:hidden}
+.user-name{font-weight:600;font-size:14px;color:var(--chalk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-email{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--font-mono)}
+.user-badge{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--chalk);background:var(--red);padding:2px 8px;border-radius:999px;
+  display:inline-block;margin-top:4px;
+}
+
+.sidebar-nav{flex:1;overflow-y:auto;padding:16px 0}
+.nav-section{padding:8px 16px 4px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.24em;text-transform:uppercase;color:var(--muted-2)}
+.nav-item{
+  display:flex;align-items:center;gap:12px;padding:11px 24px;font-size:14px;font-weight:500;
+  color:var(--muted);border-left:3px solid transparent;transition:all var(--t);cursor:pointer;
+}
+.nav-item:hover{color:var(--chalk);background:rgba(232,71,43,0.06);border-left-color:rgba(232,71,43,0.3)}
+.nav-item.active{color:var(--red);background:rgba(232,71,43,0.10);border-left-color:var(--red);font-weight:600}
+.nav-item .ni-icon{font-size:16px;width:20px;text-align:center}
+.nav-badge{margin-left:auto;background:var(--red);color:var(--chalk);font-family:var(--font-mono);font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px}
+.sidebar-footer{padding:16px 24px;border-top:1px solid var(--line)}
+.btn-logout{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);padding:10px 0;transition:color var(--t);width:100%}
+.btn-logout:hover{color:var(--red)}
+
+/* HEADER */
+.dash-main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.dash-header{
+  height:var(--header-h);background:rgba(27,22,17,0.9);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;padding:0 32px;gap:20px;
+}
+.dash-header-left{flex:1;display:flex;align-items:center;gap:16px}
+.hamburger-dash{display:none;flex-direction:column;gap:5px;padding:8px;border-radius:var(--radius)}
+.hamburger-dash span{display:block;width:20px;height:2px;background:var(--muted);transition:all var(--t)}
+.page-title{font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:0.08em;color:var(--chalk)}
+.dash-header-right{display:flex;align-items:center;gap:12px}
+.header-clock{font-family:var(--font-mono);font-size:13px;color:var(--red);letter-spacing:0.12em}
+.notif-btn{
+  position:relative;width:38px;height:38px;background:var(--ink-3);border:1px solid var(--line);
+  border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:16px;
+  transition:border-color var(--t);
+}
+.notif-btn:hover{border-color:var(--red)}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--amber);border-radius:50%;border:2px solid var(--ink-2)}
+.header-avatar{
+  width:36px;height:36px;border-radius:50%;background:var(--red);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:16px;font-weight:800;color:var(--chalk);cursor:pointer;
+}
+
+/* CONTENT */
+.dash-content{flex:1;padding:32px;overflow-y:auto}
+.panel{display:none}
+.panel.active{display:block}
+
+/* WIDGETS */
+.greeting{margin-bottom:32px}
+.greeting-sub{font-family:var(--font-mono);font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.greeting-title{font-family:var(--font-display);font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:0.04em;color:var(--chalk);line-height:1.1}
+.greeting-email{font-size:13px;color:var(--muted);margin-top:6px;font-family:var(--font-mono)}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{
+  background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius-lg);
+  padding:20px;display:flex;flex-direction:column;gap:6px;
+  transition:border-color var(--t),transform var(--t);
+}
+.stat-card:hover{border-color:var(--line-strong);transform:translateY(-2px)}
+.stat-card-icon{font-size:22px;margin-bottom:4px}
+.stat-card-value{font-family:var(--font-display);font-size:32px;font-weight:800;color:var(--chalk);line-height:1}
+.stat-card-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)}
+.stat-card-delta{font-size:12px;color:var(--green);font-family:var(--font-mono)}
+.stat-card-delta.warn{color:var(--amber)}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:28px}
+.card{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px}
+.card-title{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:0.24em;text-transform:uppercase;
+  color:var(--red);margin-bottom:18px;display:flex;align-items:center;gap:10px;
+}
+.card-title::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red-glow)}
+
+/* Member list */
+.member-list{display:flex;flex-direction:column;gap:10px}
+.member-item{
+  display:flex;align-items:center;gap:14px;padding:14px;
+  background:var(--ink-3);border-radius:var(--radius);border:1px solid transparent;
+  transition:border-color var(--t);
+}
+.member-item:hover{border-color:var(--line-strong)}
+.member-av{
+  width:36px;height:36px;border-radius:50%;background:var(--red);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--chalk);flex-shrink:0;
+}
+.member-info{flex:1}
+.member-name{font-weight:600;font-size:14px;color:var(--chalk)}
+.member-sport{font-size:12px;color:var(--muted);margin-top:2px}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-family:var(--font-mono)}
+.pill-red{background:rgba(232,71,43,0.15);color:var(--red)}
+.pill-amber{background:rgba(255,182,39,0.15);color:var(--amber)}
+.pill-green{background:rgba(60,203,127,0.15);color:var(--green)}
+
+.session-list{display:flex;flex-direction:column;gap:12px}
+.session-item{
+  display:flex;align-items:center;gap:14px;padding:14px;
+  background:var(--ink-3);border-radius:var(--radius);border:1px solid transparent;transition:border-color var(--t);
+}
+.session-item:hover{border-color:var(--line-strong)}
+.session-time{font-family:var(--font-mono);font-size:12px;color:var(--red);letter-spacing:0.1em;min-width:58px;text-align:center}
+.session-info{flex:1}
+.session-sport{font-weight:600;font-size:14px;color:var(--chalk)}
+.session-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.session-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(232,71,43,0.12);color:var(--red)}
+.session-tag.amber{background:rgba(255,182,39,0.12);color:var(--amber)}
+.session-tag.green{background:rgba(60,203,127,0.12);color:var(--green)}
+
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted-2);padding:10px 14px;border-bottom:1px solid var(--line);text-align:left}
+.data-table td{padding:13px 14px;font-size:14px;border-bottom:1px solid var(--line);color:var(--chalk)}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:rgba(232,71,43,0.04)}
+
+/* Schedule */
+.schedule-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.day-head{font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);text-align:center;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.day-head.today{color:var(--red)}
+.sched-slot{background:var(--ink-3);border-radius:var(--radius);padding:8px;font-size:11px;color:var(--muted);margin-bottom:6px;border:1px solid transparent;transition:border-color var(--t);cursor:pointer}
+.sched-slot:hover{border-color:var(--line-strong)}
+.sched-slot.booked{border-color:var(--red);color:var(--chalk);background:rgba(232,71,43,0.08)}
+.sched-slot-time{font-family:var(--font-mono);font-size:10px;color:var(--red)}
+.sched-slot-sport{font-weight:600;font-size:12px;margin-top:2px}
+
+/* Profile */
+.profile-layout{display:grid;grid-template-columns:1fr 2fr;gap:24px}
+.profile-avatar-section{display:flex;flex-direction:column;align-items:center;gap:16px;padding:24px}
+.profile-avatar-lg{width:88px;height:88px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:38px;font-weight:800;color:var(--chalk)}
+.profile-name-lg{font-family:var(--font-display);font-size:22px;font-weight:800;text-align:center}
+.profile-email-lg{font-family:var(--font-mono);font-size:12px;color:var(--muted);text-align:center}
+.speciality-badges{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+.spec-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(232,71,43,0.12);color:var(--red);border:1px solid var(--line-strong)}
+
+.profile-form{display:flex;flex-direction:column;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)}
+.form-group input,.form-group select,.form-group textarea{background:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;font-size:14px;color:var(--chalk);font-family:var(--font-body);transition:border-color var(--t),box-shadow var(--t);width:100%}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-glow)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group textarea{resize:vertical;min-height:80px}
+
+.btn-save{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--red);color:var(--chalk);font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;padding:13px 28px;border-radius:var(--radius);box-shadow:0 8px 24px var(--red-glow);transition:all var(--t)}
+.btn-save:hover{background:var(--red-dim);transform:translateY(-2px)}
+.btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:transparent;color:var(--muted);font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:12px 24px;border-radius:var(--radius);border:1px solid var(--line);transition:all var(--t)}
+.btn-outline:hover{border-color:var(--red);color:var(--red)}
+
+.prog-list{display:flex;flex-direction:column;gap:16px}
+.prog-item{}
+.prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.prog-label{font-size:13px;font-weight:500;color:var(--chalk)}
+.prog-pct{font-family:var(--font-mono);font-size:12px;color:var(--red)}
+.prog-bar{height:5px;background:var(--ink-3);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--red);border-radius:3px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
+
+/* Sidebar overlay */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:150;backdrop-filter:blur(2px)}
+
+/* Toast */
+.d-toast{position:fixed;bottom:24px;right:24px;z-index:999;background:var(--ink-3);border:1px solid var(--red);border-radius:var(--radius);padding:14px 20px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--chalk);box-shadow:0 12px 40px rgba(0,0,0,0.5);display:flex;align-items:center;gap:10px;transform:translateY(80px);opacity:0;transition:all 0.35s cubic-bezier(0.4,0,0.2,1)}
+.d-toast.show{transform:translateY(0);opacity:1}
+.d-toast .dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red-glow)}
+
+/* Attendance ring */
+.ring-wrap{display:flex;align-items:center;gap:24px;padding:8px 0}
+.ring{width:80px;height:80px;flex-shrink:0}
+.ring-label{font-size:13px;color:var(--muted)}
+.ring-val{font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--chalk)}
+
+@media(max-width:1100px){.stats-row{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){
+  .grid-2{grid-template-columns:1fr}
+  .grid-3{grid-template-columns:1fr}
+  .profile-layout{grid-template-columns:1fr}
+  .schedule-grid{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay{display:block;pointer-events:none;opacity:0;transition:opacity var(--t)}
+  .sidebar-overlay.open{pointer-events:all;opacity:1}
+  .dash-main{margin-left:0}
+  .hamburger-dash{display:flex}
+  .dash-content{padding:20px 16px}
+  .stats-row{grid-template-columns:1fr 1fr;gap:12px}
+  .schedule-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:480px){.stats-row{grid-template-columns:1fr 1fr}.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">STACK<span>LY</span></div>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="sideAvatar">?</div>
+    <div class="user-info">
+      <div class="user-name" id="sidebarName">Loading…</div>
+      <div class="user-email" id="sidebarEmail">—</div>
+      <div class="user-badge">Coach</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Overview</div>
+    <div class="nav-item active" data-panel="overview"><span class="ni-icon">🏠</span> Dashboard</div>
+    <div class="nav-item" data-panel="schedule"><span class="ni-icon">📅</span> My Schedule <span class="nav-badge">5</span></div>
+    <div class="nav-section">Coaching</div>
+    <div class="nav-item" data-panel="members"><span class="ni-icon">👥</span> My Members</div>
+    <div class="nav-item" data-panel="sessions"><span class="ni-icon">⚡</span> Sessions</div>
+    <div class="nav-item" data-panel="attendance"><span class="ni-icon">✅</span> Attendance</div>
+    <div class="nav-section">Account</div>
+    <div class="nav-item" data-panel="profile"><span class="ni-icon">👤</span> My Profile</div>
+    <div class="nav-item" data-panel="earnings"><span class="ni-icon">💰</span> Earnings</div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="btn-logout" onclick="doLogout()">🚪 Sign Out</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="dash-main">
+  <header class="dash-header">
+    <div class="dash-header-left">
+      <button class="hamburger-dash" id="hamBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="page-title" id="pageTitle">Dashboard</div>
+    </div>
+    <div class="dash-header-right">
+      <div class="header-clock" id="hClock">00:00:00</div>
+      <button class="notif-btn">🔔<span class="notif-dot"></span></button>
+      <div class="header-avatar" id="hAvatar">?</div>
+    </div>
+  </header>
+
+  <div class="dash-content">
+
+    <!-- OVERVIEW -->
+    <div class="panel active" id="panel-overview">
+      <div class="greeting">
+        <div class="greeting-sub">Coach Portal</div>
+        <div class="greeting-title" id="greetName">Coach</div>
+        <div class="greeting-email" id="greetEmail">—</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-card-icon">👥</div><div class="stat-card-value">42</div><div class="stat-card-label">Active Members</div><div class="stat-card-delta">↑ 3 new this week</div></div>
+        <div class="stat-card"><div class="stat-card-icon">⚡</div><div class="stat-card-value">18</div><div class="stat-card-label">Sessions This Week</div><div class="stat-card-delta">↑ 2 vs last week</div></div>
+        <div class="stat-card"><div class="stat-card-icon">📊</div><div class="stat-card-value">94%</div><div class="stat-card-label">Avg Attendance</div><div class="stat-card-delta warn">▼ 2% vs last month</div></div>
+        <div class="stat-card"><div class="stat-card-icon">💰</div><div class="stat-card-value">₹62k</div><div class="stat-card-label">Monthly Earnings</div><div class="stat-card-delta">↑ ₹4k bonus</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Today's Schedule</div>
+          <div class="session-list">
+            <div class="session-item"><div class="session-time">06:00</div><div class="session-info"><div class="session-sport">Cricket — Batting</div><div class="session-sub">Group · 8 members</div></div><div class="session-tag green">Done</div></div>
+            <div class="session-item"><div class="session-time">09:00</div><div class="session-info"><div class="session-sport">Cricket — Fielding</div><div class="session-sub">Group · 6 members</div></div><div class="session-tag green">Done</div></div>
+            <div class="session-item"><div class="session-time">17:00</div><div class="session-info"><div class="session-sport">1-on-1: Rahul Verma</div><div class="session-sub">Individual · 60 min</div></div><div class="session-tag amber">Soon</div></div>
+            <div class="session-item"><div class="session-time">19:00</div><div class="session-info"><div class="session-sport">Cricket — Advanced</div><div class="session-sub">Group · 10 members</div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Member Performance</div>
+          <div class="prog-list">
+            <div class="prog-item"><div class="prog-top"><span class="prog-label">Rahul Verma</span><span class="prog-pct">88%</span></div><div class="prog-bar"><div class="prog-fill" style="width:88%"></div></div></div>
+            <div class="prog-item"><div class="prog-top"><span class="prog-label">Anjali Rao</span><span class="prog-pct">74%</span></div><div class="prog-bar"><div class="prog-fill" style="width:74%"></div></div></div>
+            <div class="prog-item"><div class="prog-top"><span class="prog-label">Dev Kumar</span><span class="prog-pct">65%</span></div><div class="prog-bar"><div class="prog-fill" style="width:65%"></div></div></div>
+            <div class="prog-item"><div class="prog-top"><span class="prog-label">Sneha Patel</span><span class="prog-pct">91%</span></div><div class="prog-bar"><div class="prog-fill" style="width:91%"></div></div></div>
+            <div class="prog-item"><div class="prog-top"><span class="prog-label">Kiran Singh</span><span class="prog-pct">50%</span></div><div class="prog-bar"><div class="prog-fill" style="width:50%"></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Recent Sessions</div>
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Session</th><th>Members</th><th>Duration</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>15 Jun</td><td>Cricket — Batting</td><td>8</td><td>90 min</td><td><span class="pill pill-green">Completed</span></td></tr>
+            <tr><td>14 Jun</td><td>Cricket — Fielding</td><td>7</td><td>75 min</td><td><span class="pill pill-green">Completed</span></td></tr>
+            <tr><td>14 Jun</td><td>1-on-1: Rahul Verma</td><td>1</td><td>60 min</td><td><span class="pill pill-green">Completed</span></td></tr>
+            <tr><td>13 Jun</td><td>Cricket — Advanced</td><td>10</td><td>90 min</td><td><span class="pill pill-green">Completed</span></td></tr>
+            <tr><td>12 Jun</td><td>Fitness Conditioning</td><td>5</td><td>60 min</td><td><span class="pill pill-amber">Partial</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SCHEDULE -->
+    <div class="panel" id="panel-schedule">
+      <div class="greeting"><div class="greeting-sub">Weekly View</div><div class="greeting-title">MY SCHEDULE</div></div>
+      <div class="card">
+        <div class="card-title">Week of June 15–21, 2026</div>
+        <div class="schedule-grid">
+          <div class="day-col"><div class="day-head today">MON<br>15</div><div class="sched-slot booked"><div class="sched-slot-time">06:00</div><div class="sched-slot-sport">Batting</div></div><div class="sched-slot booked"><div class="sched-slot-time">09:00</div><div class="sched-slot-sport">Fielding</div></div><div class="sched-slot booked"><div class="sched-slot-time">17:00</div><div class="sched-slot-sport">1-on-1</div></div><div class="sched-slot booked"><div class="sched-slot-time">19:00</div><div class="sched-slot-sport">Advanced</div></div></div>
+          <div class="day-col"><div class="day-head">TUE<br>16</div><div class="sched-slot booked"><div class="sched-slot-time">06:00</div><div class="sched-slot-sport">Batting</div></div><div class="sched-slot booked"><div class="sched-slot-time">18:00</div><div class="sched-slot-sport">Fitness</div></div></div>
+          <div class="day-col"><div class="day-head">WED<br>17</div><div class="sched-slot booked"><div class="sched-slot-time">07:00</div><div class="sched-slot-sport">Group</div></div><div class="sched-slot booked"><div class="sched-slot-time">19:00</div><div class="sched-slot-sport">Advanced</div></div></div>
+          <div class="day-col"><div class="day-head">THU<br>18</div><div class="sched-slot"><div class="sched-slot-time">Rest</div><div class="sched-slot-sport">Off Day</div></div></div>
+          <div class="day-col"><div class="day-head">FRI<br>19</div><div class="sched-slot booked"><div class="sched-slot-time">06:00</div><div class="sched-slot-sport">Batting</div></div><div class="sched-slot booked"><div class="sched-slot-time">17:00</div><div class="sched-slot-sport">1-on-1</div></div></div>
+          <div class="day-col"><div class="day-head">SAT<br>20</div><div class="sched-slot booked"><div class="sched-slot-time">08:00</div><div class="sched-slot-sport">Full Team</div></div></div>
+          <div class="day-col"><div class="day-head">SUN<br>21</div><div class="sched-slot"><div class="sched-slot-time">Rest</div><div class="sched-slot-sport">Day Off</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEMBERS -->
+    <div class="panel" id="panel-members">
+      <div class="greeting"><div class="greeting-sub">Roster</div><div class="greeting-title">MY MEMBERS</div></div>
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title">Active Members (42)</div>
+        <div class="member-list">
+          <div class="member-item"><div class="member-av">RV</div><div class="member-info"><div class="member-name">Rahul Verma</div><div class="member-sport">Cricket · Advanced</div></div><span class="pill pill-green">Excellent</span></div>
+          <div class="member-item"><div class="member-av">AR</div><div class="member-info"><div class="member-name">Anjali Rao</div><div class="member-sport">Cricket · Intermediate</div></div><span class="pill pill-amber">Good</span></div>
+          <div class="member-item"><div class="member-av">DK</div><div class="member-info"><div class="member-name">Dev Kumar</div><div class="member-sport">Cricket · Beginner</div></div><span class="pill pill-amber">Average</span></div>
+          <div class="member-item"><div class="member-av">SP</div><div class="member-info"><div class="member-name">Sneha Patel</div><div class="member-sport">Cricket · Advanced</div></div><span class="pill pill-green">Excellent</span></div>
+          <div class="member-item"><div class="member-av">KS</div><div class="member-info"><div class="member-name">Kiran Singh</div><div class="member-sport">Cricket · Beginner</div></div><span class="pill pill-red">Needs Focus</span></div>
+          <div class="member-item"><div class="member-av">PM</div><div class="member-info"><div class="member-name">Prithvi More</div><div class="member-sport">Cricket · Intermediate</div></div><span class="pill pill-green">Good</span></div>
+          <div class="member-item"><div class="member-av">TN</div><div class="member-info"><div class="member-name">Tanvi Nair</div><div class="member-sport">Cricket · Advanced</div></div><span class="pill pill-green">Excellent</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSIONS -->
+    <div class="panel" id="panel-sessions">
+      <div class="greeting"><div class="greeting-sub">Training Log</div><div class="greeting-title">ALL SESSIONS</div></div>
+      <div class="card">
+        <div class="card-title">June 2026 — All Sessions</div>
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Session Type</th><th>Sport</th><th>Members</th><th>Duration</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>15 Jun</td><td>Group — Batting</td><td>Cricket</td><td>8</td><td>90 min</td><td><span class="pill pill-green">Done</span></td></tr>
+            <tr><td>15 Jun</td><td>Group — Fielding</td><td>Cricket</td><td>6</td><td>75 min</td><td><span class="pill pill-green">Done</span></td></tr>
+            <tr><td>15 Jun</td><td>1-on-1</td><td>Cricket</td><td>1</td><td>60 min</td><td><span class="pill pill-amber">Upcoming</span></td></tr>
+            <tr><td>14 Jun</td><td>Group — Advanced</td><td>Cricket</td><td>10</td><td>90 min</td><td><span class="pill pill-green">Done</span></td></tr>
+            <tr><td>14 Jun</td><td>1-on-1</td><td>Cricket</td><td>1</td><td>60 min</td><td><span class="pill pill-green">Done</span></td></tr>
+            <tr><td>13 Jun</td><td>Fitness Conditioning</td><td>Fitness</td><td>5</td><td>60 min</td><td><span class="pill pill-amber">Partial</span></td></tr>
+            <tr><td>12 Jun</td><td>Group — Batting</td><td>Cricket</td><td>9</td><td>90 min</td><td><span class="pill pill-green">Done</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ATTENDANCE -->
+    <div class="panel" id="panel-attendance">
+      <div class="greeting"><div class="greeting-sub">Tracking</div><div class="greeting-title">ATTENDANCE</div></div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-card-icon">✅</div><div class="stat-card-value">94%</div><div class="stat-card-label">Avg Attendance</div><div class="stat-card-delta">This month</div></div>
+        <div class="stat-card"><div class="stat-card-icon">🚫</div><div class="stat-card-value">3</div><div class="stat-card-label">No-Shows</div><div class="stat-card-delta warn">This week</div></div>
+        <div class="stat-card"><div class="stat-card-icon">📋</div><div class="stat-card-value">18</div><div class="stat-card-label">Sessions Run</div><div class="stat-card-delta">This week</div></div>
+        <div class="stat-card"><div class="stat-card-icon">🏅</div><div class="stat-card-value">Sneha</div><div class="stat-card-label">Top Attendee</div><div class="stat-card-delta">100% rate</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Member Attendance — June 2026</div>
+        <table class="data-table">
+          <thead><tr><th>Member</th><th>Level</th><th>Sessions Due</th><th>Attended</th><th>Missed</th><th>Rate</th></tr></thead>
+          <tbody>
+            <tr><td>Rahul Verma</td><td>Advanced</td><td>20</td><td>19</td><td>1</td><td><span class="pill pill-green">95%</span></td></tr>
+            <tr><td>Anjali Rao</td><td>Intermediate</td><td>18</td><td>16</td><td>2</td><td><span class="pill pill-amber">89%</span></td></tr>
+            <tr><td>Dev Kumar</td><td>Beginner</td><td>15</td><td>12</td><td>3</td><td><span class="pill pill-amber">80%</span></td></tr>
+            <tr><td>Sneha Patel</td><td>Advanced</td><td>20</td><td>20</td><td>0</td><td><span class="pill pill-green">100%</span></td></tr>
+            <tr><td>Kiran Singh</td><td>Beginner</td><td>15</td><td>9</td><td>6</td><td><span class="pill pill-red">60%</span></td></tr>
+            <tr><td>Prithvi More</td><td>Intermediate</td><td>18</td><td>17</td><td>1</td><td><span class="pill pill-green">94%</span></td></tr>
+            <tr><td>Tanvi Nair</td><td>Advanced</td><td>20</td><td>20</td><td>0</td><td><span class="pill pill-green">100%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="panel" id="panel-profile">
+      <div class="greeting"><div class="greeting-sub">Coach Account</div><div class="greeting-title">MY PROFILE</div></div>
+      <div class="card">
+        <div class="profile-layout">
+          <div class="profile-avatar-section">
+            <div class="profile-avatar-lg" id="profileAvatarLg">?</div>
+            <div class="profile-name-lg" id="profileNameLg">—</div>
+            <div class="profile-email-lg" id="profileEmailLg">—</div>
+            <div class="user-badge" style="margin-top:4px">Head Coach</div>
+            <div class="speciality-badges">
+              <span class="spec-badge">Cricket</span>
+              <span class="spec-badge">Fitness</span>
+            </div>
+            <button class="btn-outline" style="margin-top:12px">Change Photo</button>
+          </div>
+          <div>
+            <div class="profile-form">
+              <div class="form-row">
+                <div class="form-group"><label>First Name</label><input type="text" id="pFirstName" placeholder="First name"></div>
+                <div class="form-group"><label>Last Name</label><input type="text" id="pLastName" placeholder="Last name"></div>
+              </div>
+              <div class="form-group"><label>Email Address</label><input type="email" id="pEmail" readonly style="opacity:0.6;cursor:not-allowed"></div>
+              <div class="form-row">
+                <div class="form-group"><label>Phone</label><input type="tel" placeholder="+91 00000 00000"></div>
+                <div class="form-group"><label>Experience (Years)</label><input type="number" value="8" min="0"></div>
+              </div>
+              <div class="form-group"><label>Primary Sport</label>
+                <select><option>Cricket</option><option>Football</option><option>Basketball</option><option>Tennis</option><option>Swimming</option><option>Athletics</option><option>Badminton</option><option>Hockey</option></select>
+              </div>
+              <div class="form-group"><label>Bio</label><textarea placeholder="Tell members about yourself…">Certified NCA coach with 8+ years training competitive cricketers across Karnataka. Specialising in batting technique and mental conditioning.</textarea></div>
+              <div style="display:flex;gap:12px;margin-top:8px">
+                <button class="btn-save" onclick="showToast('Profile saved!')">Save Changes</button>
+                <button class="btn-outline">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EARNINGS -->
+    <div class="panel" id="panel-earnings">
+      <div class="greeting"><div class="greeting-sub">Financials</div><div class="greeting-title">MY EARNINGS</div></div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-card-icon">💰</div><div class="stat-card-value">₹62k</div><div class="stat-card-label">June 2026</div><div class="stat-card-delta">↑ ₹4k bonus</div></div>
+        <div class="stat-card"><div class="stat-card-icon">📦</div><div class="stat-card-value">₹3.44L</div><div class="stat-card-label">YTD 2026</div><div class="stat-card-delta">↑ 12% vs 2025</div></div>
+        <div class="stat-card"><div class="stat-card-icon">⚡</div><div class="stat-card-value">18</div><div class="stat-card-label">Billable Sessions</div><div class="stat-card-delta">This week</div></div>
+        <div class="stat-card"><div class="stat-card-icon">⭐</div><div class="stat-card-value">4.9</div><div class="stat-card-label">Member Rating</div><div class="stat-card-delta">42 reviews</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Payout History</div>
+        <table class="data-table">
+          <thead><tr><th>Month</th><th>Sessions</th><th>Base Pay</th><th>Bonus</th><th>Total</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Jun 2026</td><td>72</td><td>₹58,000</td><td>₹4,000</td><td>₹62,000</td><td><span class="pill pill-amber">Processing</span></td></tr>
+            <tr><td>May 2026</td><td>68</td><td>₹56,000</td><td>₹2,000</td><td>₹58,000</td><td><span class="pill pill-green">Paid</span></td></tr>
+            <tr><td>Apr 2026</td><td>70</td><td>₹57,000</td><td>₹3,000</td><td>₹60,000</td><td><span class="pill pill-green">Paid</span></td></tr>
+            <tr><td>Mar 2026</td><td>65</td><td>₹55,000</td><td>₹0</td><td>₹55,000</td><td><span class="pill pill-green">Paid</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- end dash-content -->
+</main>
+
+<div class="d-toast" id="dToast"><span class="dot"></span><span id="dToastMsg">Done</span></div>
+
+<script>
+// ---- Load user ----
+const email = sessionStorage.getItem('sc_email') || 'coach@stackly.in';
+const name = sessionStorage.getItem('sc_name') || 'Coach';
+const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+
+document.getElementById('sidebarName').textContent = name;
+document.getElementById('sidebarEmail').textContent = email;
+document.getElementById('sideAvatar').textContent = initials;
+document.getElementById('hAvatar').textContent = initials;
+document.getElementById('greetName').textContent = 'COACH ' + name.toUpperCase();
+document.getElementById('greetEmail').textContent = '✉ ' + email;
+document.getElementById('profileAvatarLg').textContent = initials;
+document.getElementById('profileNameLg').textContent = name;
+document.getElementById('profileEmailLg').textContent = email;
+document.getElementById('pEmail').value = email;
+const nameParts = name.split(' ');
+if(document.getElementById('pFirstName')) document.getElementById('pFirstName').value = nameParts[0]||'';
+if(document.getElementById('pLastName')) document.getElementById('pLastName').value = nameParts.slice(1).join(' ')||'';
+
+// ---- Clock ----
+const hClock = document.getElementById('hClock');
+setInterval(()=>{
+  const n=new Date(),p=v=>String(v).padStart(2,'0');
+  hClock.textContent=`${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
+},1000);
+
+// ---- Navigation ----
+const navItems = document.querySelectorAll('.nav-item');
+const panels = document.querySelectorAll('.panel');
+const pageTitle = document.getElementById('pageTitle');
+const titles = {overview:'Dashboard',schedule:'Schedule',members:'My Members',sessions:'Sessions',attendance:'Attendance',profile:'My Profile',earnings:'Earnings'};
+
+navItems.forEach(item=>{
+  item.addEventListener('click',()=>{
+    navItems.forEach(n=>n.classList.remove('active'));
+    item.classList.add('active');
+    const panelId = item.dataset.panel;
+    panels.forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+panelId)?.classList.add('active');
+    pageTitle.textContent = titles[panelId]||'Dashboard';
+    closeSidebar();
+  });
+});
+
+// ---- Hamburger ----
+const hamBtn = document.getElementById('hamBtn');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+hamBtn.addEventListener('click',()=>{sidebar.classList.toggle('open');overlay.classList.toggle('open')});
+overlay.addEventListener('click',closeSidebar);
+function closeSidebar(){sidebar.classList.remove('open');overlay.classList.remove('open')}
+
+// ---- Logout ----
+function doLogout(){sessionStorage.clear();window.location.href='signin.html'}
+
+// ---- Toast ----
+function showToast(msg){
+  const t=document.getElementById('dToast');
+  document.getElementById('dToastMsg').textContent=msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+</script>
+</body>
+</html>
