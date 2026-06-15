@@ -6,6 +6,8 @@
 <title>Our Coaches — Stackly Sports Club</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="inner.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
 <div class="cursor-glow"></div>
@@ -163,7 +165,7 @@
       </div>
       <div class="coach-full-card reveal delay-6">
         <div class="cfc-photo">
-          <img src="https://wsrv.nl/?url=images.unsplash.com/photo-1500648767791-00d5a4ee9baa&w=600&output=webp&q=70&fit=cover" alt="Devraj Patel">
+          <img src="https://wsrv.nl/?url=images.unsplash.com/photo-1519861531473-9200262188bf&w=600&output=webp&q=70&fit=cover" alt="Devraj Patel">
           <div class="cfc-photo-overlay">
             <a href="#" class="social-btn">in</a>
             <a href="#" class="social-btn">𝕏</a>
@@ -191,7 +193,7 @@
       <div class="section-eyebrow reveal" style="justify-content:center;">Coaching Philosophy</div>
       <h2 class="section-title reveal delay-1">WHY OUR <span class="accent">COACHES STAND OUT</span></h2>
     </div>
-    <div class="benefits-grid reveal delay-2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;">
+    <div class="benefits-grid coach-benefits reveal delay-2">
       <div class="benefit-item" style="text-align:center;padding:32px 20px;background:var(--dark3);border-radius:var(--radius-lg);border:1px solid var(--border);">
         <div class="bi-icon" style="font-size:40px;margin-bottom:16px;">🎓</div>
         <h4 style="font-family:var(--font-heading);font-size:17px;font-weight:700;color:var(--white);margin-bottom:10px;letter-spacing:0.05em;">Certified Experts</h4>
@@ -246,18 +248,61 @@
       <div class="footer-brand">
         <a href="index.html" class="logo-wrap"><img src="https://wsrv.nl/?url=https://snabsolutions.in/wp-content/uploads/2026/02/stackly-snab-solutions.png&w=260&h=104&output=webp&q=80&fit=inside" alt="Stackly"></a>
         <p>Train. Compete. Conquer. Stackly Sports Club is where champions are forged — in body, mind, and spirit.</p>
-        <div class="footer-socials"><a href="#" class="social-btn">📷</a><a href="#" class="social-btn">f</a><a href="#" class="social-btn">𝕏</a><a href="#" class="social-btn">▶</a></div>
+       <div class="footer-social-row">
+  <a href="404.html" aria-label="Facebook">
+    <i class="fa-brands fa-facebook-f"></i>
+  </a>
+
+  <a href="404.html" aria-label="Instagram">
+    <i class="fa-brands fa-instagram"></i>
+  </a>
+
+  <a href="404.html" aria-label="Twitter">
+    <i class="fa-brands fa-x-twitter"></i>
+  </a>
+
+  <a href="404.html" aria-label="LinkedIn">
+    <i class="fa-brands fa-linkedin-in"></i>
+  </a>
+
+  <a href="404.html" aria-label="YouTube">
+    <i class="fa-brands fa-youtube"></i>
+  </a>
+</div>
       </div>
       <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="classes.html">Sports</a></li><li><a href="coaches.html">Coaches</a></li><li><a href="schedule.html">Schedule</a></li><li><a href="contact.html">Contact</a></li></ul></div>
       <div class="footer-col"><h4>Sports</h4><ul><li><a href="classes.html">Cricket</a></li><li><a href="classes.html">Football</a></li><li><a href="classes.html">Basketball</a></li><li><a href="classes.html">Tennis</a></li><li><a href="classes.html">Swimming</a></li><li><a href="classes.html">Athletics</a></li></ul></div>
-      <div class="footer-col"><h4>Contact</h4><ul><li><a href="#">📍 123 Champion Ave, Hubballi</a></li><li><a href="tel:+918001234567">📞 +91 800 123 4567</a></li><li><a href="mailto:info@stackly.in">✉ info@stackly.in</a></li><li><a href="#">🕐 Mon–Sat: 5am–11pm</a></li><li><a href="#">🕐 Sunday: 7am–9pm</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4>
+        <ul>
+          <li><a href="404.html">📍 123 Champion Ave, Hubballi</a></li>
+          <li><a href="404.html">📞 +91 800 123 4567</a></li>
+          <li><a href="404.html">✉ info@stackly.in</a></li>
+          <li><a href="404.html">🕐 Mon–Sat: 5am–11pm</a></li>
+          <li><a href="404.html">🕐 Sunday: 7am–9pm</a></li></ul></div>
     </div>
     <div class="footer-bottom">
       <p>&copy; 2026 Stackly Sports Club. All rights reserved.</p>
-      <div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Cookie Policy</a></div>
+      <div class="footer-links">
+        <a href="404.html">Privacy Policy</a>
+        <a href="404.html">Terms of Use</a>
+        <a href="404.html">Cookie Policy</a></div>
     </div>
   </div>
 </footer>
 <script src="main.js"></script>
+<style>
+.coach-benefits {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+@media (max-width: 992px) {
+  .coach-benefits { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+}
+@media (max-width: 560px) {
+  .coach-benefits { grid-template-columns: 1fr; gap: 16px; }
+  .coach-benefits .benefit-item { padding: 28px 20px; }
+}
+</style>
 </body>
 </html>

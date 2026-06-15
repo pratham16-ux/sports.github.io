@@ -547,3 +547,48 @@
   .awards-grid { grid-template-columns: 1fr; }
   .about-stats { grid-template-columns: 1fr 1fr; }
 }
+/* ==========================================
+   FAQ ACCORDION (shared across inner pages)
+   ========================================== */
+.accordion { display: flex; flex-direction: column; gap: 4px; }
+.accordion-item {
+  background: var(--dark3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.accordion-trigger {
+  width: 100%;
+  text-align: left;
+  padding: 20px 20px;
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+.accordion-trigger:hover { color: var(--primary); }
+.accordion-body {
+  padding: 0 20px;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+}
+.accordion-body p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  padding-bottom: 20px;
+}
+.acc-icon {
+  flex-shrink: 0;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--primary);
+}

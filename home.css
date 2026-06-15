@@ -35,10 +35,14 @@
 .slide-content {
   position: absolute;
   z-index: 3;
+  top: calc(var(--header-h) + 40px);
   bottom: 120px;
   left: 40px;
   right: 40px;
-  max-width: 720px;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 .hero-title {
   font-family: var(--font-display);
@@ -635,7 +639,7 @@
   .nl-input { width: 100%; }
 }
 @media (max-width: 768px) {
-  .slide-content { left: 20px; right: 20px; bottom: 100px; }
+  .slide-content { left: 20px; right: 20px; top: calc(var(--header-h) + 24px); bottom: 100px; max-width: none; }
   .hero-title { font-size: clamp(52px, 14vw, 100px); }
   .slide-badge { display: none; }
   .slider-controls { left: 20px; bottom: 20px; }

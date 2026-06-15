@@ -162,10 +162,14 @@
       document.querySelectorAll('.accordion-item.open').forEach(o => {
         o.classList.remove('open');
         o.querySelector('.accordion-body').style.maxHeight = '0';
+        const icon = o.querySelector('.acc-icon');
+        if (icon) icon.textContent = '+';
       });
       if (!isOpen) {
         item.classList.add('open');
         body.style.maxHeight = body.scrollHeight + 'px';
+        const icon = trigger.querySelector('.acc-icon');
+        if (icon) icon.textContent = '\u2212';
       }
     });
   });
@@ -203,5 +207,104 @@
       }
     });
   });
+
+  /* ---- NEWSLETTER SUBSCRIBE FORM ---- */
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  document.querySelectorAll('.newsletter-form').forEach(form => {
+    const input = form.querySelector('.nl-input');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!input) return;
+
+      const value = input.value.trim();
+
+      if (!value || !emailRegex.test(value)) {
+        input.classList.add('input-error', 'shake');
+        input.focus();
+        setTimeout(() => input.classList.remove('shake'), 400);
+        return;
+      }
+
+      input.classList.remove('input-error');
+      showSiteToast("You're subscribed! Watch your inbox for Stackly updates.");
+      form.reset();
+    });
+
+    input?.addEventListener('input', () => input.classList.remove('input-error'));
+  });
+
+  function showSiteToast(message) {
+    let toast = document.querySelector('.site-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'site-toast';
+      toast.innerHTML = '<span class="dot"></span><span class="toast-msg"></span>';
+      document.body.appendChild(toast);
+    }
+    toast.querySelector('.toast-msg').textContent = message;
+    requestAnimationFrame(() => toast.classList.add('show'));
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('show'), 3200);
+  }
+
+  /* ---- CONTACT FORM VALIDATION ---- */
+  const contactForm = document.querySelector('.contact-form');
+  if (contactForm) {
+    const nameInput = contactForm.querySelector('#cf-name');
+    const phoneInput = contactForm.querySelector('#cf-phone');
+    const emailInput = contactForm.querySelector('#cf-email');
+
+    const nameRegex = /^[A-Za-z\s]{1,16}$/;
+    const phoneRegex = /^[0-9]{10}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const markInvalid = (input) => {
+      input.classList.add('input-error', 'shake');
+      setTimeout(() => input.classList.remove('shake'), 400);
+    };
+
+    // Letters & spaces only, capped at 16 chars as the user types
+    nameInput?.addEventListener('input', () => {
+      nameInput.value = nameInput.value.replace(/[^A-Za-z\s]/g, '').slice(0, 16);
+      nameInput.classList.remove('input-error');
+    });
+
+    // Digits only, capped at 10 as the user types
+    phoneInput?.addEventListener('input', () => {
+      phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 10);
+      phoneInput.classList.remove('input-error');
+    });
+
+    emailInput?.addEventListener('input', () => emailInput.classList.remove('input-error'));
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let valid = true;
+
+      const nameVal = nameInput.value.trim();
+      const phoneVal = phoneInput.value.trim();
+      const emailVal = emailInput.value.trim();
+
+      if (!nameVal || !nameRegex.test(nameVal)) {
+        markInvalid(nameInput);
+        valid = false;
+      }
+      if (phoneVal && !phoneRegex.test(phoneVal)) {
+        markInvalid(phoneInput);
+        valid = false;
+      }
+      if (!emailVal || !emailRegex.test(emailVal)) {
+        markInvalid(emailInput);
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      showSiteToast("Message sent — our team will get back to you within 24 hours.");
+      contactForm.reset();
+    });
+  }
 
 })();

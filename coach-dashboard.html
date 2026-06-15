@@ -53,11 +53,32 @@ ul{list-style:none}
   display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;
   z-index:200;transition:transform var(--t);
 }
+
+/* ── LOGO: centred, tinted to brand red ── */
 .sidebar-logo{
-  padding:24px 24px 20px;border-bottom:1px solid var(--line);
-  font-family:var(--font-display);font-weight:800;font-size:24px;letter-spacing:0.1em;color:var(--chalk);
+  padding:20px 24px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+ 
+  align-items:center;
+  min-height:72px;
 }
-.sidebar-logo span{color:var(--red)}
+.sidebar-logo img{
+  width:auto;
+  height: 38px;;
+  display:block;
+  /* Desaturate then recolour to --red (#E8472B).
+     Steps: greyscale → sepia → hue‑rotate + saturate to land on the brand red */
+  filter:
+    brightness(0)          /* collapse to black */
+    saturate(100%)
+    invert(37%)            /* lift to mid-grey so colorize works on it */
+    sepia(80%)
+    hue-rotate(340deg)
+    saturate(500%)
+    brightness(1.1);
+}
+
 .sidebar-user{
   padding:20px 24px;border-bottom:1px solid var(--line);
   display:flex;align-items:center;gap:12px;
@@ -214,6 +235,8 @@ ul{list-style:none}
 .form-group label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)}
 .form-group input,.form-group select,.form-group textarea{background:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;font-size:14px;color:var(--chalk);font-family:var(--font-body);transition:border-color var(--t),box-shadow var(--t);width:100%}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-glow)}
+.form-group input.invalid,.form-group select.invalid,.form-group textarea.invalid{border-color:var(--red);box-shadow:0 0 0 3px var(--red-glow)}
+.field-error{font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;color:var(--red);min-height:14px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form-group textarea{resize:vertical;min-height:80px}
 
@@ -237,6 +260,8 @@ ul{list-style:none}
 .d-toast{position:fixed;bottom:24px;right:24px;z-index:999;background:var(--ink-3);border:1px solid var(--red);border-radius:var(--radius);padding:14px 20px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--chalk);box-shadow:0 12px 40px rgba(0,0,0,0.5);display:flex;align-items:center;gap:10px;transform:translateY(80px);opacity:0;transition:all 0.35s cubic-bezier(0.4,0,0.2,1)}
 .d-toast.show{transform:translateY(0);opacity:1}
 .d-toast .dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red-glow)}
+.d-toast.error{border-color:var(--amber)}
+.d-toast.error .dot{background:var(--amber);box-shadow:0 0 10px rgba(255,182,39,0.4)}
 
 /* Attendance ring */
 .ring-wrap{display:flex;align-items:center;gap:24px;padding:8px 0}
@@ -271,7 +296,12 @@ ul{list-style:none}
 
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">STACK<span>LY</span></div>
+  <div class="sidebar-logo">
+   <a href="index.html"> <img
+      src="https://wsrv.nl/?url=https://snabsolutions.in/wp-content/uploads/2026/02/stackly-snab-solutions.png&w=320&h=128&output=webp&q=80&fit=inside"
+      alt="Stackly Sports Club"
+    ></a>
+  </div>
   <div class="sidebar-user">
     <div class="user-avatar" id="sideAvatar">?</div>
     <div class="user-info">
@@ -458,17 +488,17 @@ ul{list-style:none}
               <span class="spec-badge">Cricket</span>
               <span class="spec-badge">Fitness</span>
             </div>
-            <button class="btn-outline" style="margin-top:12px">Change Photo</button>
-          </div>
+           <a href="404.html"> <button class="btn-outline" style="margin-top:12px">Change Photo</button>
+          </div></a>
           <div>
             <div class="profile-form">
               <div class="form-row">
-                <div class="form-group"><label>First Name</label><input type="text" id="pFirstName" placeholder="First name"></div>
-                <div class="form-group"><label>Last Name</label><input type="text" id="pLastName" placeholder="Last name"></div>
+                <div class="form-group"><label>First Name</label><input type="text" id="pFirstName" maxlength="16"><div class="field-error" id="firstErr"></div></div>
+                <div class="form-group"><label>Last Name</label><input type="text" id="pLastName" maxlength="16"><div class="field-error" id="lastErr"></div></div>
               </div>
-              <div class="form-group"><label>Email Address</label><input type="email" id="pEmail" readonly style="opacity:0.6;cursor:not-allowed"></div>
+              <div class="form-group"><label>Email Address</label><input type="email" id="pEmail"><div class="field-error" id="emailErr"></div></div>
               <div class="form-row">
-                <div class="form-group"><label>Phone</label><input type="tel" placeholder="+91 00000 00000"></div>
+                <div class="form-group"><label>Phone</label><input type="tel" id="pPhone" maxlength="10" placeholder="9876543210"><div class="field-error" id="phoneErr"></div></div>
                 <div class="form-group"><label>Experience (Years)</label><input type="number" value="8" min="0"></div>
               </div>
               <div class="form-group"><label>Primary Sport</label>
@@ -477,7 +507,7 @@ ul{list-style:none}
               <div class="form-group"><label>Bio</label><textarea placeholder="Tell members about yourself…">Certified NCA coach with 8+ years training competitive cricketers across Karnataka. Specialising in batting technique and mental conditioning.</textarea></div>
               <div style="display:flex;gap:12px;margin-top:8px">
                 <button class="btn-save" onclick="showToast('Profile saved!')">Save Changes</button>
-                <button class="btn-outline">Cancel</button>
+               <button class="btn-outline" id="cancelBtn">Cancel</button>
               </div>
             </div>
           </div>
@@ -577,6 +607,24 @@ function showToast(msg){
   clearTimeout(t._timer);
   t._timer=setTimeout(()=>t.classList.remove('show'),2800);
 }
+
+const originalData = {
+  first: document.getElementById('pFirstName').value,
+  last: document.getElementById('pLastName').value,
+  email: document.getElementById('pEmail').value,
+  phone: document.getElementById('pPhone').value
+};
+
+document.getElementById('cancelBtn').addEventListener('click', function(e) {
+  e.preventDefault();
+
+  document.getElementById('pFirstName').value = originalData.first;
+  document.getElementById('pLastName').value = originalData.last;
+  document.getElementById('pEmail').value = originalData.email;
+  document.getElementById('pPhone').value = originalData.phone;
+
+  showToast('Changes Cancelled');
+});
 </script>
 </body>
 </html>

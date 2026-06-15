@@ -134,9 +134,10 @@ ul{list-style:none}
   position:relative;width:38px;height:38px;
   background:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius);
   display:flex;align-items:center;justify-content:center;font-size:16px;
-  transition:border-color var(--t);
+  transition:border-color var(--t), background var(--t);
+  cursor:pointer;
 }
-.notif-btn:hover{border-color:var(--amber)}
+.notif-btn:hover{border-color:var(--amber); background:rgba(200,240,58,0.08);}
 .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid var(--ink-2)}
 .header-avatar{
   width:36px;height:36px;border-radius:50%;
@@ -144,6 +145,56 @@ ul{list-style:none}
   display:flex;align-items:center;justify-content:center;
   font-family:var(--font-display);font-size:16px;font-weight:800;
   color:var(--ink);cursor:pointer;
+}
+
+/* ===== NOTIFICATION DROPDOWN ===== */
+.notif-dropdown{
+  position:absolute;top:calc(var(--header-h) - 4px);right:32px;
+  width:320px;
+  background:var(--ink-2);
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius-lg);
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  z-index:300;
+  overflow:hidden;
+  opacity:0;pointer-events:none;
+  transform:translateY(-8px);
+  transition:opacity 0.2s ease, transform 0.2s ease;
+}
+.notif-dropdown.open{opacity:1;pointer-events:all;transform:translateY(0)}
+.notif-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 18px;
+  border-bottom:1px solid var(--line);
+}
+.notif-header-title{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--amber);
+}
+.notif-clear{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--muted);
+  cursor:pointer;transition:color var(--t);
+}
+.notif-clear:hover{color:var(--red)}
+.notif-list{max-height:300px;overflow-y:auto}
+.notif-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:14px 18px;border-bottom:1px solid var(--line);
+  transition:background var(--t);cursor:pointer;
+}
+.notif-item:last-child{border-bottom:none}
+.notif-item:hover{background:rgba(200,240,58,0.05)}
+.notif-item.unread{background:rgba(200,240,58,0.04)}
+.notif-icon{font-size:18px;margin-top:2px;flex-shrink:0}
+.notif-body{}
+.notif-title{font-size:13px;font-weight:600;color:var(--chalk);margin-bottom:2px}
+.notif-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.notif-time{font-family:var(--font-mono);font-size:10px;color:var(--muted-2);margin-top:4px}
+.notif-unread-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--amber);
+  flex-shrink:0;margin-top:6px;margin-left:auto;
+  box-shadow:0 0 6px var(--amber-glow);
 }
 
 /* ===== CONTENT ===== */
@@ -296,6 +347,22 @@ ul{list-style:none}
 }
 .btn-outline:hover{border-color:var(--amber);color:var(--amber)}
 
+/* Field error */
+.field-error{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--red);margin-top:4px;
+  display:block;min-height:14px;
+}
+
+/* Shake animation */
+@keyframes shake{
+  10%,90%{transform:translateX(-1px)}
+  20%,80%{transform:translateX(2px)}
+  30%,50%,70%{transform:translateX(-4px)}
+  40%,60%{transform:translateX(4px)}
+}
+.shake{animation:shake 0.5s;border-color:var(--red)!important}
+
 /* Sidebar overlay */
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:150;backdrop-filter:blur(2px)}
 
@@ -319,6 +386,7 @@ ul{list-style:none}
   .profile-layout{grid-template-columns:1fr}
   .schedule-grid{grid-template-columns:repeat(4,1fr)}
   .day-col:nth-child(n+5):not(:nth-child(4)){display:none}
+  .notif-dropdown{right:16px;width:290px}
 }
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%)}
@@ -331,6 +399,7 @@ ul{list-style:none}
   .stats-row{grid-template-columns:1fr 1fr;gap:12px}
   .schedule-grid{grid-template-columns:repeat(3,1fr)}
   .day-col:nth-child(n+4){display:none}
+  .notif-dropdown{right:8px;width:calc(100vw - 16px)}
 }
 @media(max-width:480px){
   .stats-row{grid-template-columns:1fr 1fr}
@@ -341,6 +410,51 @@ ul{list-style:none}
 <body>
 
 <div class="sidebar-overlay" id="overlay"></div>
+
+<!-- NOTIFICATION DROPDOWN (outside header so it can overlap freely) -->
+<div class="notif-dropdown" id="notifDropdown">
+  <div class="notif-header">
+    <span class="notif-header-title">Notifications</span>
+    <span class="notif-clear" id="notifClear">Clear all</span>
+  </div>
+  <div class="notif-list" id="notifList">
+    <div class="notif-item unread">
+      <span class="notif-icon">📅</span>
+      <div class="notif-body">
+        <div class="notif-title">Session Reminder</div>
+        <div class="notif-desc">Fitness &amp; Conditioning with Coach Priya starts at 18:00 today.</div>
+        <div class="notif-time">2 hours ago</div>
+      </div>
+      <span class="notif-unread-dot"></span>
+    </div>
+    <div class="notif-item unread">
+      <span class="notif-icon">🏆</span>
+      <div class="notif-body">
+        <div class="notif-title">Badge Earned!</div>
+        <div class="notif-desc">You've unlocked the "7 Day Streak" achievement. Keep it up!</div>
+        <div class="notif-time">Yesterday</div>
+      </div>
+      <span class="notif-unread-dot"></span>
+    </div>
+    <div class="notif-item unread">
+      <span class="notif-icon">💳</span>
+      <div class="notif-body">
+        <div class="notif-title">Payment Confirmed</div>
+        <div class="notif-desc">Gold Membership for June 2026 — ₹1,499 via UPI.</div>
+        <div class="notif-time">15 Jun 2026</div>
+      </div>
+      <span class="notif-unread-dot"></span>
+    </div>
+    <div class="notif-item">
+      <span class="notif-icon">📢</span>
+      <div class="notif-body">
+        <div class="notif-title">Facility Update</div>
+        <div class="notif-desc">Swimming pool will be closed for maintenance on 18 Jun (Thu).</div>
+        <div class="notif-time">13 Jun 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
@@ -383,7 +497,9 @@ ul{list-style:none}
     </div>
     <div class="dash-header-right">
       <div class="header-clock" id="hClock">00:00:00</div>
-      <button class="notif-btn">🔔<span class="notif-dot"></span></button>
+      <button class="notif-btn" id="notifBtn" aria-label="Notifications" aria-expanded="false">
+        🔔<span class="notif-dot" id="notifDot"></span>
+      </button>
       <div class="header-avatar" id="hAvatar">?</div>
     </div>
   </header>
@@ -408,7 +524,7 @@ ul{list-style:none}
           <div class="card-title">Today's Sessions</div>
           <div class="session-list">
             <div class="session-item"><div class="session-time">06:00</div><div class="session-info"><div class="session-sport">Cricket — Batting</div><div class="session-coach">Coach Rajesh Kumar</div></div><div class="session-tag green">Done</div></div>
-            <div class="session-item"><div class="session-time">18:00</div><div class="session-info"><div class="session-sport">Fitness & Conditioning</div><div class="session-coach">Coach Priya Sharma</div></div><div class="session-tag">Upcoming</div></div>
+            <div class="session-item"><div class="session-time">18:00</div><div class="session-info"><div class="session-sport">Fitness &amp; Conditioning</div><div class="session-coach">Coach Priya Sharma</div></div><div class="session-tag">Upcoming</div></div>
             <div class="session-item"><div class="session-time">20:00</div><div class="session-info"><div class="session-sport">Basketball — Drills</div><div class="session-coach">Coach Arjun Singh</div></div><div class="session-tag">Upcoming</div></div>
           </div>
         </div>
@@ -531,22 +647,45 @@ ul{list-style:none}
             <button class="btn-outline" style="margin-top:12px">Change Photo</button>
           </div>
           <div>
-            <div class="profile-form">
+            <div class="profile-form" id="profileForm">
               <div class="form-row">
-                <div class="form-group"><label>First Name</label><input type="text" id="pFirstName" placeholder="First name"></div>
-                <div class="form-group"><label>Last Name</label><input type="text" id="pLastName" placeholder="Last name"></div>
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input type="text" id="pFirstName" placeholder="First name" maxlength="16" autocomplete="given-name">
+                  <span class="field-error" id="errFirstName"></span>
+                </div>
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input type="text" id="pLastName" placeholder="Last name" maxlength="16" autocomplete="family-name">
+                  <span class="field-error" id="errLastName"></span>
+                </div>
               </div>
-              <div class="form-group"><label>Email Address</label><input type="email" id="pEmail" readonly style="opacity:0.6;cursor:not-allowed"></div>
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="pEmail" readonly style="opacity:0.6;cursor:not-allowed" autocomplete="email">
+              </div>
               <div class="form-row">
-                <div class="form-group"><label>Phone</label><input type="tel" placeholder="+91 00000 00000"></div>
-                <div class="form-group"><label>Date of Birth</label><input type="date"></div>
+                <div class="form-group">
+                  <label>Phone</label>
+                  <input type="tel" id="pPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric" autocomplete="tel">
+                  <span class="field-error" id="errPhone"></span>
+                </div>
+                <div class="form-group">
+                  <label>Date of Birth</label>
+                  <input type="date" id="pDob" max="">
+                </div>
               </div>
-              <div class="form-group"><label>Primary Sport</label>
-                <select><option>Cricket</option><option>Football</option><option>Basketball</option><option>Tennis</option><option>Swimming</option><option>Athletics</option><option>Badminton</option><option>Hockey</option><option>Fitness</option></select>
+              <div class="form-group">
+                <label>Primary Sport</label>
+                <select id="pSport">
+                  <option>Cricket</option><option>Football</option><option>Basketball</option>
+                  <option>Tennis</option><option>Swimming</option><option>Athletics</option>
+                  <option>Badminton</option><option>Hockey</option><option>Fitness</option>
+                </select>
               </div>
               <div style="display:flex;gap:12px;margin-top:8px">
-                <button class="btn-save" onclick="showToast('Profile saved!')">Save Changes</button>
-                <button class="btn-outline">Cancel</button>
+                <button class="btn-save" id="btnSaveProfile">Save Changes</button>
+                <button class="btn-outline" id="btnCancelProfile">Cancel</button>
               </div>
             </div>
           </div>
@@ -581,75 +720,247 @@ ul{list-style:none}
 <div class="d-toast" id="dToast"><span class="dot"></span><span id="dToastMsg">Done</span></div>
 
 <script>
-// ---- Load user from session ----
-const email = sessionStorage.getItem('sc_email') || 'member@stackly.in';
-const name = sessionStorage.getItem('sc_name') || 'Member';
-const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+(function () {
+  'use strict';
 
-document.getElementById('sidebarName').textContent = name;
-document.getElementById('sidebarEmail').textContent = email;
-document.getElementById('sideAvatar').textContent = initials;
-document.getElementById('hAvatar').textContent = initials;
-document.getElementById('greetName').textContent = name.toUpperCase();
-document.getElementById('greetEmail').textContent = '✉ ' + email;
-document.getElementById('profileAvatarLg').textContent = initials;
-document.getElementById('profileNameLg').textContent = name;
-document.getElementById('profileEmailLg').textContent = email;
-document.getElementById('pEmail').value = email;
-const nameParts = name.split(' ');
-if(document.getElementById('pFirstName')) document.getElementById('pFirstName').value = nameParts[0]||'';
-if(document.getElementById('pLastName')) document.getElementById('pLastName').value = nameParts.slice(1).join(' ')||'';
+  /* ── USER FROM SESSION ── */
+  const email = sessionStorage.getItem('sc_email') || 'member@stackly.in';
+  const name  = sessionStorage.getItem('sc_name')  || 'Member';
+  const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
 
-// ---- Clock ----
-const hClock = document.getElementById('hClock');
-setInterval(()=>{
-  const n=new Date(),p=v=>String(v).padStart(2,'0');
-  hClock.textContent=`${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
-},1000);
+  document.getElementById('sidebarName').textContent    = name;
+  document.getElementById('sidebarEmail').textContent   = email;
+  document.getElementById('sideAvatar').textContent     = initials;
+  document.getElementById('hAvatar').textContent        = initials;
+  document.getElementById('greetName').textContent      = name.toUpperCase();
+  document.getElementById('greetEmail').textContent     = '✉ ' + email;
+  document.getElementById('profileAvatarLg').textContent = initials;
+  document.getElementById('profileNameLg').textContent  = name;
+  document.getElementById('profileEmailLg').textContent = email;
+  document.getElementById('pEmail').value               = email;
 
-// ---- Navigation ----
-const navItems = document.querySelectorAll('.nav-item');
-const panels = document.querySelectorAll('.panel');
-const pageTitle = document.getElementById('pageTitle');
-const titles = {overview:'Dashboard',schedule:'Schedule',sessions:'My Sessions',progress:'Progress',achievements:'Achievements',profile:'My Profile',payments:'Payments'};
+  const nameParts = name.split(' ');
+  document.getElementById('pFirstName').value = nameParts[0] || '';
+  document.getElementById('pLastName').value  = nameParts.slice(1).join(' ') || '';
 
-navItems.forEach(item=>{
-  item.addEventListener('click',()=>{
-    navItems.forEach(n=>n.classList.remove('active'));
-    item.classList.add('active');
-    const panelId = item.dataset.panel;
-    panels.forEach(p=>p.classList.remove('active'));
-    document.getElementById('panel-'+panelId)?.classList.add('active');
-    pageTitle.textContent = titles[panelId]||'Dashboard';
-    closeSidebar();
+  /* Set max DOB to today (can't pick future date) */
+  document.getElementById('pDob').setAttribute('max', new Date().toISOString().split('T')[0]);
+
+  /* Snapshot original profile values for Cancel */
+  function snapshotProfile() {
+    return {
+      firstName : document.getElementById('pFirstName').value,
+      lastName  : document.getElementById('pLastName').value,
+      phone     : document.getElementById('pPhone').value,
+      dob       : document.getElementById('pDob').value,
+      sport     : document.getElementById('pSport').value,
+    };
+  }
+  let profileSnapshot = snapshotProfile();
+
+  /* ── CLOCK ── */
+  const hClock = document.getElementById('hClock');
+  setInterval(() => {
+    const n = new Date(), p = v => String(v).padStart(2, '0');
+    hClock.textContent = `${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
+  }, 1000);
+
+  /* ── NAVIGATION ── */
+  const navItems  = document.querySelectorAll('.nav-item');
+  const panels    = document.querySelectorAll('.panel');
+  const pageTitle = document.getElementById('pageTitle');
+  const titles    = { overview:'Dashboard', schedule:'Schedule', sessions:'My Sessions', progress:'Progress', achievements:'Achievements', profile:'My Profile', payments:'Payments' };
+
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      navItems.forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+      const panelId = item.dataset.panel;
+      panels.forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + panelId)?.classList.add('active');
+      pageTitle.textContent = titles[panelId] || 'Dashboard';
+      /* Refresh snapshot when navigating to profile */
+      if (panelId === 'profile') profileSnapshot = snapshotProfile();
+      closeSidebar();
+    });
   });
-});
 
-// ---- Hamburger ----
-const hamBtn = document.getElementById('hamBtn');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('overlay');
-hamBtn.addEventListener('click',()=>{
-  sidebar.classList.toggle('open');
-  overlay.classList.toggle('open');
-});
-overlay.addEventListener('click',closeSidebar);
-function closeSidebar(){sidebar.classList.remove('open');overlay.classList.remove('open')}
+  /* ── HAMBURGER ── */
+  const hamBtn  = document.getElementById('hamBtn');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  hamBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+  overlay.addEventListener('click', closeSidebar);
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('open'); }
 
-// ---- Logout ----
-function doLogout(){
-  sessionStorage.clear();
-  window.location.href='signin.html';
-}
+  /* ── NOTIFICATION DROPDOWN ── */
+  const notifBtn      = document.getElementById('notifBtn');
+  const notifDropdown = document.getElementById('notifDropdown');
+  const notifDot      = document.getElementById('notifDot');
+  const notifClear    = document.getElementById('notifClear');
+  let notifOpen       = false;
 
-// ---- Toast ----
-function showToast(msg){
-  const t=document.getElementById('dToast');
-  document.getElementById('dToastMsg').textContent=msg;
-  t.classList.add('show');
-  clearTimeout(t._timer);
-  t._timer=setTimeout(()=>t.classList.remove('show'),2800);
-}
+  notifBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    notifOpen = !notifOpen;
+    notifDropdown.classList.toggle('open', notifOpen);
+    notifBtn.setAttribute('aria-expanded', notifOpen);
+  });
+
+  notifClear.addEventListener('click', () => {
+    document.querySelectorAll('.notif-item.unread').forEach(item => {
+      item.classList.remove('unread');
+      const dot = item.querySelector('.notif-unread-dot');
+      if (dot) dot.remove();
+    });
+    notifDot.style.display = 'none';
+    showToast('All notifications cleared');
+    notifOpen = false;
+    notifDropdown.classList.remove('open');
+    notifBtn.setAttribute('aria-expanded', 'false');
+  });
+
+  /* Close dropdown when clicking outside */
+  document.addEventListener('click', (e) => {
+    if (notifOpen && !notifDropdown.contains(e.target) && !notifBtn.contains(e.target)) {
+      notifOpen = false;
+      notifDropdown.classList.remove('open');
+      notifBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  /* ── PROFILE LIVE INPUT RESTRICTIONS ── */
+
+  /* Name: letters, spaces, hyphens only */
+  ['pFirstName', 'pLastName'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => {
+      const cleaned = el.value.replace(/[^A-Za-z\s\-]/g, '');
+      if (el.value !== cleaned) el.value = cleaned;
+    });
+  });
+
+  /* Phone: digits only, max 10 */
+  const pPhone = document.getElementById('pPhone');
+  pPhone.addEventListener('input', () => {
+    const cleaned = pPhone.value.replace(/\D/g, '').slice(0, 10);
+    if (pPhone.value !== cleaned) pPhone.value = cleaned;
+  });
+
+  /* ── PROFILE VALIDATION HELPERS ── */
+  function showFieldError(id, msg) {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = msg; }
+  }
+  function clearFieldErrors() {
+    ['errFirstName','errLastName','errPhone'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '';
+    });
+    document.querySelectorAll('#profileForm input').forEach(inp => {
+      inp.classList.remove('shake');
+      inp.style.borderColor = '';
+    });
+  }
+  function shakeField(inputId) {
+    const el = document.getElementById(inputId);
+    if (!el) return;
+    el.style.borderColor = 'var(--red)';
+    el.classList.add('shake');
+    setTimeout(() => { el.classList.remove('shake'); el.style.borderColor = ''; }, 600);
+  }
+  function isValidEmail(val) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val.trim()) &&
+           !/\.{2,}/.test(val) &&
+           !val.trim().startsWith('.') &&
+           !val.trim().endsWith('.');
+  }
+
+  /* ── SAVE CHANGES ── */
+  document.getElementById('btnSaveProfile').addEventListener('click', () => {
+    clearFieldErrors();
+    let valid = true;
+
+    const firstName = document.getElementById('pFirstName').value.trim();
+    const lastName  = document.getElementById('pLastName').value.trim();
+    const phone     = pPhone.value.replace(/\D/g, '');
+    const emailVal  = document.getElementById('pEmail').value.trim();
+
+    /* First name */
+    if (!firstName) {
+      shakeField('pFirstName'); showFieldError('errFirstName', 'First name is required'); valid = false;
+    } else if (!/^[A-Za-z\s\-]{1,16}$/.test(firstName)) {
+      shakeField('pFirstName'); showFieldError('errFirstName', 'Letters only, max 16 chars'); valid = false;
+    }
+
+    /* Last name */
+    if (!lastName) {
+      shakeField('pLastName'); showFieldError('errLastName', 'Last name is required'); valid = false;
+    } else if (!/^[A-Za-z\s\-]{1,16}$/.test(lastName)) {
+      shakeField('pLastName'); showFieldError('errLastName', 'Letters only, max 16 chars'); valid = false;
+    }
+
+    /* Phone (optional but if filled must be 10 digits) */
+    if (phone.length > 0 && phone.length !== 10) {
+      shakeField('pPhone'); showFieldError('errPhone', 'Enter a valid 10-digit number'); valid = false;
+    }
+
+    /* Email read-only but sanity check */
+    if (!isValidEmail(emailVal)) {
+      showToast('Invalid email — please contact support'); valid = false;
+    }
+
+    if (!valid) return;
+
+    /* Persist to sessionStorage */
+    const fullName = (firstName + ' ' + lastName).trim();
+    sessionStorage.setItem('sc_name', fullName);
+
+    /* Update visible UI */
+    const newInitials = fullName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    ['sideAvatar','hAvatar','profileAvatarLg'].forEach(id => {
+      document.getElementById(id).textContent = newInitials;
+    });
+    document.getElementById('sidebarName').textContent   = fullName;
+    document.getElementById('greetName').textContent     = fullName.toUpperCase();
+    document.getElementById('profileNameLg').textContent = fullName;
+
+    /* Refresh snapshot so Cancel now resets to saved state */
+    profileSnapshot = snapshotProfile();
+
+    showToast('Profile saved successfully!');
+  });
+
+  /* ── CANCEL — restore last saved snapshot ── */
+  document.getElementById('btnCancelProfile').addEventListener('click', () => {
+    document.getElementById('pFirstName').value = profileSnapshot.firstName;
+    document.getElementById('pLastName').value  = profileSnapshot.lastName;
+    document.getElementById('pPhone').value     = profileSnapshot.phone;
+    document.getElementById('pDob').value       = profileSnapshot.dob;
+    document.getElementById('pSport').value     = profileSnapshot.sport;
+    clearFieldErrors();
+    showToast('Changes discarded');
+  });
+
+  /* ── LOGOUT ── */
+  window.doLogout = function () {
+    sessionStorage.clear();
+    window.location.href = 'signin.html';
+  };
+
+  /* ── TOAST ── */
+  window.showToast = function (msg) {
+    const t = document.getElementById('dToast');
+    document.getElementById('dToastMsg').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 2800);
+  };
+
+})();
 </script>
 </body>
 </html>

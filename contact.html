@@ -6,6 +6,8 @@
 <title>Contact Us — Stackly Sports Club</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="inner.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
 <div class="cursor-glow"></div>
@@ -94,15 +96,15 @@
       <div class="contact-form-wrap reveal-right">
         <div class="section-eyebrow">Send a Message</div>
         <h2 class="section-title" style="margin-bottom:28px;">START YOUR<br><span class="accent">JOURNEY</span></h2>
-        <form class="contact-form" onsubmit="return false;">
+        <form class="contact-form">
           <div class="form-row">
             <div class="form-group">
               <label for="cf-name">Full Name</label>
-              <input type="text" id="cf-name" name="name" placeholder="Your name" required>
+              <input type="text" id="cf-name" name="name" placeholder="Your name" maxlength="16" pattern="[A-Za-z\s]{1,16}" title="Letters only, up to 16 characters" required>
             </div>
             <div class="form-group">
               <label for="cf-phone">Phone</label>
-              <input type="tel" id="cf-phone" name="phone" placeholder="+91 00000 00000">
+              <input type="tel" id="cf-phone" name="phone" placeholder="10-digit mobile number" maxlength="10" inputmode="numeric" pattern="[0-9]{10}" title="Enter exactly 10 digits">
             </div>
           </div>
           <div class="form-row">
@@ -155,19 +157,19 @@
     </div>
     <div class="accordion" style="max-width:760px;margin:0 auto;">
       <div class="accordion-item reveal delay-1">
-        <button class="accordion-trigger">Do I need to commit to a long-term contract?</button>
+        <button class="accordion-trigger">Do I need to commit to a long-term contract? <span class="acc-icon">+</span></button>
         <div class="accordion-body"><p>No. All Stackly memberships are month-to-month with no lock-in period. Cancel or pause anytime with 7 days' notice.</p></div>
       </div>
       <div class="accordion-item reveal delay-2">
-        <button class="accordion-trigger">Can I book a free trial session before joining?</button>
+        <button class="accordion-trigger">Can I book a free trial session before joining? <span class="acc-icon">+</span></button>
         <div class="accordion-body"><p>Absolutely — every new visitor gets a free first-week trial across any sport of their choice, including a facility tour with one of our coaches.</p></div>
       </div>
       <div class="accordion-item reveal delay-3">
-        <button class="accordion-trigger">What age groups do you cater to?</button>
+        <button class="accordion-trigger">What age groups do you cater to? <span class="acc-icon">+</span></button>
         <div class="accordion-body"><p>Our programs run from age 6 through adult and senior categories, with age-appropriate coaching plans for every group.</p></div>
       </div>
       <div class="accordion-item reveal delay-4">
-        <button class="accordion-trigger">Is parking available on site?</button>
+        <button class="accordion-trigger">Is parking available on site? <span class="acc-icon">+</span></button>
         <div class="accordion-body"><p>Yes, Stackly has free on-site parking for members and visitors, including dedicated two-wheeler and car bays.</p></div>
       </div>
     </div>
@@ -192,17 +194,37 @@
       <div class="footer-brand">
         <a href="index.html" class="logo-wrap"><img src="https://wsrv.nl/?url=https://snabsolutions.in/wp-content/uploads/2026/02/stackly-snab-solutions.png&w=260&h=104&output=webp&q=80&fit=inside" alt="Stackly"></a>
         <p>Train. Compete. Conquer. Stackly Sports Club is where champions are forged — in body, mind, and spirit.</p>
-        <div class="footer-socials">
-          <a href="#" class="social-btn">📷</a><a href="#" class="social-btn">f</a><a href="#" class="social-btn">𝕏</a><a href="#" class="social-btn">▶</a>
-        </div>
+        <div class="footer-social-row">
+  <a href="404.html" aria-label="Facebook">
+    <i class="fa-brands fa-facebook-f"></i>
+  </a>
+
+  <a href="404.html" aria-label="Instagram">
+    <i class="fa-brands fa-instagram"></i>
+  </a>
+
+  <a href="404.html" aria-label="Twitter">
+    <i class="fa-brands fa-x-twitter"></i>
+  </a>
+
+  <a href="404.html" aria-label="LinkedIn">
+    <i class="fa-brands fa-linkedin-in"></i>
+  </a>
+
+  <a href="404.html" aria-label="YouTube">
+    <i class="fa-brands fa-youtube"></i>
+  </a>
+</div>
       </div>
       <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="classes.html">Sports</a></li><li><a href="coaches.html">Coaches</a></li><li><a href="schedule.html">Schedule</a></li><li><a href="contact.html">Contact</a></li></ul></div>
       <div class="footer-col"><h4>Sports</h4><ul><li><a href="classes.html">Cricket</a></li><li><a href="classes.html">Football</a></li><li><a href="classes.html">Basketball</a></li><li><a href="classes.html">Tennis</a></li><li><a href="classes.html">Swimming</a></li><li><a href="classes.html">Athletics</a></li></ul></div>
-      <div class="footer-col"><h4>Contact</h4><ul><li><a href="#">📍 123 Champion Ave, Hubballi</a></li><li><a href="tel:+918001234567">📞 +91 800 123 4567</a></li><li><a href="mailto:info@stackly.in">✉ info@stackly.in</a></li><li><a href="#">🕐 Mon–Sat: 5am–11pm</a></li><li><a href="#">🕐 Sunday: 7am–9pm</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4>
+        <ul>
+          <li><a href="404.html">📍 123 Champion Ave, Hubballi</a></li><li><a href="404.html">📞 +91 800 123 4567</a></li><li><a href="404.html">✉ info@stackly.in</a></li><li><a href="404.html">🕐 Mon–Sat: 5am–11pm</a></li><li><a href="404.html">🕐 Sunday: 7am–9pm</a></li></ul></div>
     </div>
     <div class="footer-bottom">
       <p>&copy; 2026 Stackly Sports Club. All rights reserved.</p>
-      <div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Cookie Policy</a></div>
+      <div class="footer-links"><a href="404.html">Privacy Policy</a><a href="404.html">Terms of Use</a><a href="404.html">Cookie Policy</a></div>
     </div>
   </div>
 </footer>

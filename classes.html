@@ -6,6 +6,8 @@
 <title>Sports & Programs — Stackly Sports Club</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="inner.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
 <div class="cursor-glow"></div>
@@ -29,7 +31,7 @@
 </nav>
 
 <!-- S1: HERO -->
-<section class="page-hero" style="--hero-img:url('https://wsrv.nl/?url=images.unsplash.com/photo-1551958219-acbc608c6377&w=1400&output=webp&q=60&fit=cover')">
+<section class="page-hero" style="--hero-img:url('https://wsrv.nl/?url=images.unsplash.com/photo-1551958219-acbc608c6377&w=1280&output=webp&q=45&fit=cover')">
   <div class="page-hero-overlay"></div>
   <div class="section-inner page-hero-content">
     <div class="page-hero-eyebrow reveal">Programs</div>
@@ -147,7 +149,7 @@
         </div>
       </div>
       <div class="class-full-card reveal delay-1" data-cat="athletics">
-        <div class="cfc-img"><img src="https://wsrv.nl/?url=images.unsplash.com/photo-1571008592535-7bf9c30dd71b&w=600&output=webp&q=70&fit=cover" alt="Athletics" loading="lazy"><div class="cfc-level"><span class="tag">Intermediate+</span></div></div>
+        <div class="cfc-img"><img src="https://wsrv.nl/?url=images.unsplash.com/photo-1461896836934-ffe607ba8211&w=600&output=webp&q=70&fit=cover" alt="Athletics" loading="lazy"><div class="cfc-level"><span class="tag">Intermediate+</span></div></div>
         <div class="cfc-body">
           <h3>Track & Field Athletics</h3>
           <p>Sprints, distance running, and field events coached on our indoor 200m banked track.</p>
@@ -370,15 +372,46 @@
       <div class="footer-brand">
         <a href="index.html" class="logo-wrap"><img src="https://wsrv.nl/?url=https://snabsolutions.in/wp-content/uploads/2026/02/stackly-snab-solutions.png&w=260&h=104&output=webp&q=80&fit=inside" alt="Stackly"></a>
         <p>Train. Compete. Conquer. Stackly Sports Club is where champions are forged — in body, mind, and spirit.</p>
-        <div class="footer-socials"><a href="#" class="social-btn">📷</a><a href="#" class="social-btn">f</a><a href="#" class="social-btn">𝕏</a><a href="#" class="social-btn">▶</a></div>
+        <div class="footer-social-row">
+  <a href="404.html" aria-label="Facebook">
+    <i class="fa-brands fa-facebook-f"></i>
+  </a>
+
+  <a href="404.html" aria-label="Instagram">
+    <i class="fa-brands fa-instagram"></i>
+  </a>
+
+  <a href="404.html" aria-label="Twitter">
+    <i class="fa-brands fa-x-twitter"></i>
+  </a>
+
+  <a href="404.html" aria-label="LinkedIn">
+    <i class="fa-brands fa-linkedin-in"></i>
+  </a>
+
+  <a href="404.html" aria-label="YouTube">
+    <i class="fa-brands fa-youtube"></i>
+  </a>
+</div>
       </div>
       <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="classes.html">Sports</a></li><li><a href="coaches.html">Coaches</a></li><li><a href="schedule.html">Schedule</a></li><li><a href="contact.html">Contact</a></li></ul></div>
       <div class="footer-col"><h4>Sports</h4><ul><li><a href="classes.html">Cricket</a></li><li><a href="classes.html">Football</a></li><li><a href="classes.html">Basketball</a></li><li><a href="classes.html">Tennis</a></li><li><a href="classes.html">Swimming</a></li><li><a href="classes.html">Athletics</a></li></ul></div>
-      <div class="footer-col"><h4>Contact</h4><ul><li><a href="#">📍 123 Champion Ave, Hubballi</a></li><li><a href="tel:+918001234567">📞 +91 800 123 4567</a></li><li><a href="mailto:info@stackly.in">✉ info@stackly.in</a></li><li><a href="#">🕐 Mon–Sat: 5am–11pm</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4>
+        <ul>
+          <li><a href="404.html">📍 123 Champion Ave, Hubballi</a></li>
+          <li><a href="404.html">📞 +91 800 123 4567</a></li>
+          <li><a href="404.html">✉ info@stackly.in</a></li>
+          <li><a href="404.html">🕐 Mon–Sat: 5am–11pm</a></li>
+        </ul>
+      </div>
     </div>
     <div class="footer-bottom">
       <p>&copy; 2026 Stackly Sports Club. All rights reserved.</p>
-      <div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Cookie Policy</a></div>
+      <div class="footer-links">
+        <a href="404.html">Privacy Policy</a>
+        <a href="404.html">Terms of Use</a>
+        <a href="404.html">Cookie Policy</a>
+      </div>
     </div>
   </div>
 </footer>
@@ -397,31 +430,6 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
         card.style.display = 'none';
       }
     });
-  });
-});
-
-// Accordion
-document.querySelectorAll('.accordion-item').forEach(item => {
-  const trigger = item.querySelector('.accordion-trigger');
-  const body = item.querySelector('.accordion-body');
-  body.style.maxHeight = '0';
-  body.style.overflow = 'hidden';
-  body.style.transition = 'max-height 0.4s ease, padding 0.4s ease';
-  body.style.padding = '0 0 0 0';
-  trigger.addEventListener('click', () => {
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.accordion-item.open').forEach(o => {
-      o.classList.remove('open');
-      o.querySelector('.accordion-body').style.maxHeight = '0';
-      o.querySelector('.accordion-body').style.padding = '0';
-      o.querySelector('.acc-icon').textContent = '+';
-    });
-    if (!isOpen) {
-      item.classList.add('open');
-      body.style.maxHeight = body.scrollHeight + 80 + 'px';
-      body.style.padding = '0 0 20px 0';
-      trigger.querySelector('.acc-icon').textContent = '−';
-    }
   });
 });
 </script>

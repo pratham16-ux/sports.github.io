@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 | Stackly Sports Club</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#C8F03A;
+  --primary-dark:#A8CC20;
+  --dark:#080C10;
+  --dark2:#0D1219;
+  --dark3:#131B24;
+  --white:#fff;
+  --text:#A8BDD0;
+  --muted:#6B7E94;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,var(--dark),var(--dark2));
+  font-family:'Inter',sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  position:relative;
+}
+
+body::before{
+  content:'';
+  position:absolute;
+  width:600px;
+  height:600px;
+  background:radial-gradient(circle,rgba(200,240,58,.15),transparent 70%);
+  top:-200px;
+  right:-200px;
+}
+
+body::after{
+  content:'';
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:radial-gradient(circle,rgba(200,240,58,.08),transparent 70%);
+  bottom:-200px;
+  left:-200px;
+}
+
+.error-container{
+  text-align:center;
+  z-index:2;
+  max-width:800px;
+  padding:40px;
+}
+
+.error-code{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(140px,25vw,320px);
+  line-height:.8;
+  color:transparent;
+  -webkit-text-stroke:3px var(--primary);
+  text-shadow:0 0 40px rgba(200,240,58,.2);
+}
+
+.error-title{
+  font-family:'Barlow Condensed',sans-serif;
+  color:var(--white);
+  font-size:clamp(40px,5vw,70px);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-top:-20px;
+}
+
+.error-text{
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.8;
+  max-width:600px;
+  margin:20px auto 40px;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:16px 36px;
+  background:var(--primary);
+  color:var(--dark);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  text-decoration:none;
+  border-radius:6px;
+  transition:.3s;
+  box-shadow:0 0 30px rgba(200,240,58,.25);
+}
+
+.btn:hover{
+  transform:translateY(-4px);
+  background:var(--primary-dark);
+}
+
+.ball{
+  position:absolute;
+  width:120px;
+  height:120px;
+  border:3px solid rgba(200,240,58,.2);
+  border-radius:50%;
+  top:15%;
+  left:10%;
+  animation:float 6s ease-in-out infinite;
+}
+
+.ball::before,
+.ball::after{
+  content:'';
+  position:absolute;
+  inset:15px;
+  border:2px solid rgba(200,240,58,.15);
+  border-radius:50%;
+}
+
+.ball2{
+  left:auto;
+  right:10%;
+  top:auto;
+  bottom:15%;
+  width:90px;
+  height:90px;
+  animation-delay:2s;
+}
+
+@keyframes float{
+  0%,100%{
+    transform:translateY(0px);
+  }
+  50%{
+    transform:translateY(-25px);
+  }
+}
+
+.club-name{
+  color:var(--primary);
+  font-family:'Barlow Condensed',sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.25em;
+  font-size:12px;
+  margin-bottom:20px;
+}
+
+@media(max-width:768px){
+  .error-container{
+    padding:20px;
+  }
+
+  .error-text{
+    font-size:16px;
+  }
+
+  .ball{
+    width:70px;
+    height:70px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="ball"></div>
+<div class="ball ball2"></div>
+
+<div class="error-container">
+
+  <div class="club-name">
+    STACKLY SPORTS CLUB
+  </div>
+
+  <h1 class="error-code">404</h1>
+
+  <h2 class="error-title">
+    Page Not Found
+  </h2>
+
+  <p class="error-text">
+    Looks like you've gone off the field. The page you're looking for
+    doesn't exist or has been moved. Let's get you back to the game.
+  </p>
+
+  <a href="index.html" class="btn">
+    Back To Home →
+  </a>
+
+</div>
+
+</body>
+</html>

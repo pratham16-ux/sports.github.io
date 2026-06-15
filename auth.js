@@ -109,20 +109,127 @@
     });
   }
 
-  /* ---- BASIC VALIDATION + DEMO SUBMIT ---- */
+  /* ---- INPUT RESTRICTIONS (live, as-you-type) ---- */
+
+  // Name fields: letters, spaces, hyphens only — max 16 chars
+  ['fname', 'lname'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.setAttribute('maxlength', '16');
+    el.addEventListener('input', () => {
+      // Strip anything that isn't a letter, space, or hyphen
+      const cleaned = el.value.replace(/[^A-Za-z\s\-]/g, '');
+      if (el.value !== cleaned) el.value = cleaned;
+    });
+  });
+
+  // Phone field: digits only, exactly 10
+  const phoneEl = document.getElementById('phone');
+  if (phoneEl) {
+    phoneEl.setAttribute('maxlength', '10');
+    phoneEl.setAttribute('inputmode', 'numeric');
+    phoneEl.addEventListener('input', () => {
+      const cleaned = phoneEl.value.replace(/\D/g, '').slice(0, 10);
+      if (phoneEl.value !== cleaned) phoneEl.value = cleaned;
+    });
+  }
+
+  /* ---- VALIDATION HELPERS ---- */
+
+  function isValidEmail(value) {
+    // RFC-aligned: local@domain.tld — rejects missing @, missing dot in domain, consecutive dots, etc.
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim()) &&
+           !/\.{2,}/.test(value) &&
+           !value.trim().startsWith('.') &&
+           !value.trim().endsWith('.');
+  }
+
+  function markInvalid(field, msg) {
+    field.classList.add('shake');
+    field.style.borderColor = 'var(--red)';
+    setTimeout(() => {
+      field.classList.remove('shake');
+      field.style.borderColor = '';
+    }, 600);
+
+    // Show inline error hint if one exists next to the field
+    let hint = field.parentElement.querySelector('.field-error');
+    if (!hint) {
+      hint = document.createElement('span');
+      hint.className = 'field-error';
+      hint.style.cssText = 'font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-top:4px;display:block;';
+      field.parentElement.appendChild(hint);
+    }
+    hint.textContent = msg;
+    setTimeout(() => { if (hint) hint.textContent = ''; }, 3000);
+  }
+
+  /* ---- FORM SUBMIT: VALIDATION + SIGNUP REDIRECT ---- */
   document.querySelectorAll('.auth-form').forEach((form) => {
+    const isSignup = !!form.querySelector('#fname'); // signup has fname; signin does not
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       let valid = true;
+
+      /* 1. Required-field blank check */
       form.querySelectorAll('[required]').forEach((field) => {
         if (!field.value.trim()) {
           valid = false;
-          field.classList.add('shake');
-          setTimeout(() => field.classList.remove('shake'), 500);
+          markInvalid(field, 'This field is required');
         }
       });
+
+      if (isSignup) {
+        /* 2. First name — letters only, 1–16 chars */
+        const fname = document.getElementById('fname');
+        if (fname && fname.value.trim()) {
+          if (!/^[A-Za-z\s\-]{1,16}$/.test(fname.value.trim())) {
+            valid = false;
+            markInvalid(fname, 'Letters only, max 16 characters');
+          }
+        }
+
+        /* 3. Last name — letters only, 1–16 chars */
+        const lname = document.getElementById('lname');
+        if (lname && lname.value.trim()) {
+          if (!/^[A-Za-z\s\-]{1,16}$/.test(lname.value.trim())) {
+            valid = false;
+            markInvalid(lname, 'Letters only, max 16 characters');
+          }
+        }
+
+        /* 4. Phone — exactly 10 digits */
+        const phone = document.getElementById('phone');
+        if (phone && phone.value.trim()) {
+          const digits = phone.value.replace(/\D/g, '');
+          if (digits.length !== 10) {
+            valid = false;
+            markInvalid(phone, 'Enter a valid 10-digit number');
+          }
+        }
+
+        /* 5. Email — stricter format check */
+        const email = document.getElementById('email');
+        if (email && email.value.trim()) {
+          if (!isValidEmail(email.value)) {
+            valid = false;
+            markInvalid(email, 'Enter a valid email address');
+          }
+        }
+      }
+
       if (!valid) return;
-      showToast(form.dataset.success || 'Welcome back — redirecting to your dashboard…');
+
+      /* All good — show toast then redirect */
+      if (isSignup) {
+        showToast(form.dataset.success || 'Account created — check your email to confirm…');
+        setTimeout(() => {
+          window.location.href = 'signin.html';
+        }, 2000); // short delay so user sees the toast
+      } else {
+        showToast(form.dataset.success || 'Welcome back — redirecting to your dashboard…');
+      }
     });
   });
 
