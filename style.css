@@ -78,7 +78,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .logo-wrap { display: flex; align-items: center; flex-shrink: 0; }
 .logo-wrap img {
-  height: 48px;
+  height: 58px;
   width: auto;
   /* Logo tinted same lime as Join Now button */
   filter: brightness(0) saturate(100%) invert(87%) sepia(55%) saturate(500%) hue-rotate(30deg) brightness(110%);

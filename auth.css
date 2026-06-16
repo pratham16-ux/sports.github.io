@@ -100,7 +100,7 @@ input, select, textarea { font-family: inherit; }
 }
 
 .auth-logo img {
-  height: 48px;
+  height: 58px;
   width: auto;
   /* Tint logo electric lime, matching global .logo-wrap img filter */
   filter: brightness(0) saturate(100%) invert(87%) sepia(55%) saturate(500%) hue-rotate(30deg) brightness(110%);

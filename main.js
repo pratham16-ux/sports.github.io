@@ -103,19 +103,22 @@
     window.addEventListener('scroll', () => {
       parallaxEls.forEach(el => {
         const speed = +(el.dataset.parallax) || 0.3;
-        const rect = el.closest('section').getBoundingClientRect();
-        const offset = rect.top * speed;
+        const section = el.closest('section');
+        if (!section) return;
+        const sRect = section.getBoundingClientRect();
+        const offset = sRect.top * speed;
         el.style.transform = `translateY(${offset}px)`;
       });
     }, { passive: true });
+
   }
 
   /* ---- SMOOTH HOVER TILT ---- */
   document.querySelectorAll('.tilt-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const cardRect = card.getBoundingClientRect();
+      const x = (e.clientX - cardRect.left) / cardRect.width - 0.5;
+      const y = (e.clientY - cardRect.top) / cardRect.height - 0.5;
       card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateZ(10px)`;
     });
     card.addEventListener('mouseleave', () => {
@@ -131,7 +134,7 @@
     const prevBtn = slider.querySelector('.slider-prev');
     const nextBtn = slider.querySelector('.slider-next');
     let current = 0;
-    let interval;
+    let sliderInterval;
 
     function goTo(idx) {
       slides[current].classList.remove('active');
@@ -142,15 +145,17 @@
     }
 
     function startAutoplay() {
-      interval = setInterval(() => goTo(current + 1), 5000);
+      sliderInterval = setInterval(() => goTo(current + 1), 5000);
     }
-    function stopAutoplay() { clearInterval(interval); }
+    function stopAutoplay() { clearInterval(sliderInterval); }
 
     nextBtn?.addEventListener('click', () => { stopAutoplay(); goTo(current + 1); startAutoplay(); });
     prevBtn?.addEventListener('click', () => { stopAutoplay(); goTo(current - 1); startAutoplay(); });
     dots.forEach((d, i) => d.addEventListener('click', () => { stopAutoplay(); goTo(i); startAutoplay(); }));
 
     if (slides.length) { slides[0].classList.add('active'); dots[0]?.classList.add('active'); startAutoplay(); }
+
+    window.addEventListener('beforeunload', stopAutoplay);
   }
 
   /* ---- ACCORDION ---- */
@@ -161,15 +166,16 @@
       const isOpen = item.classList.contains('open');
       document.querySelectorAll('.accordion-item.open').forEach(o => {
         o.classList.remove('open');
-        o.querySelector('.accordion-body').style.maxHeight = '0';
-        const icon = o.querySelector('.acc-icon');
-        if (icon) icon.textContent = '+';
+        const oBody = o.querySelector('.accordion-body');
+        if (oBody) oBody.style.maxHeight = '0';
+        const oIcon = o.querySelector('.acc-icon');
+        if (oIcon) oIcon.textContent = '+';
       });
       if (!isOpen) {
         item.classList.add('open');
-        body.style.maxHeight = body.scrollHeight + 'px';
-        const icon = trigger.querySelector('.acc-icon');
-        if (icon) icon.textContent = '\u2212';
+        if (body) body.style.maxHeight = body.scrollHeight + 'px';
+        const triggerIcon = trigger.querySelector('.acc-icon');
+        if (triggerIcon) triggerIcon.textContent = '\u2212';
       }
     });
   });
@@ -190,6 +196,7 @@
   document.querySelectorAll('.tabs-nav button').forEach(btn => {
     btn.addEventListener('click', () => {
       const parent = btn.closest('.tabs');
+      if (!parent) return;
       parent.querySelectorAll('.tabs-nav button').forEach(b => b.classList.remove('active'));
       parent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
@@ -201,15 +208,19 @@
   document.querySelectorAll('.play-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const vid = btn.closest('.video-wrap')?.querySelector('video');
-      if (vid) {
-        if (vid.paused) { vid.play(); btn.style.opacity = '0'; }
-        else { vid.pause(); btn.style.opacity = '1'; }
+      if (!vid) return;
+      if (vid.paused) {
+        vid.play().catch(() => {});
+        btn.style.opacity = '0';
+      } else {
+        vid.pause();
+        btn.style.opacity = '1';
       }
     });
   });
 
   /* ---- NEWSLETTER SUBSCRIBE FORM ---- */
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const nlEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   document.querySelectorAll('.newsletter-form').forEach(form => {
     const input = form.querySelector('.nl-input');
@@ -220,7 +231,7 @@
 
       const value = input.value.trim();
 
-      if (!value || !emailRegex.test(value)) {
+      if (!value || !nlEmailRegex.test(value)) {
         input.classList.add('input-error', 'shake');
         input.focus();
         setTimeout(() => input.classList.remove('shake'), 400);
@@ -243,10 +254,11 @@
       toast.innerHTML = '<span class="dot"></span><span class="toast-msg"></span>';
       document.body.appendChild(toast);
     }
-    toast.querySelector('.toast-msg').textContent = message;
+    const toastMsg = toast.querySelector('.toast-msg');
+    if (toastMsg) toastMsg.textContent = message;
     requestAnimationFrame(() => toast.classList.add('show'));
-    clearTimeout(toast._timer);
-    toast._timer = setTimeout(() => toast.classList.remove('show'), 3200);
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 3200);
   }
 
   /* ---- CONTACT FORM VALIDATION ---- */
@@ -258,11 +270,11 @@
 
     const nameRegex = /^[A-Za-z\s]{1,16}$/;
     const phoneRegex = /^[0-9]{10}$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const cfEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    const markInvalid = (input) => {
-      input.classList.add('input-error', 'shake');
-      setTimeout(() => input.classList.remove('shake'), 400);
+    const markInvalid = (el) => {
+      el.classList.add('input-error', 'shake');
+      setTimeout(() => el.classList.remove('shake'), 400);
     };
 
     // Letters & spaces only, capped at 16 chars as the user types
@@ -283,19 +295,19 @@
       e.preventDefault();
       let valid = true;
 
-      const nameVal = nameInput.value.trim();
-      const phoneVal = phoneInput.value.trim();
-      const emailVal = emailInput.value.trim();
+      const nameVal = nameInput ? nameInput.value.trim() : '';
+      const phoneVal = phoneInput ? phoneInput.value.trim() : '';
+      const emailVal = emailInput ? emailInput.value.trim() : '';
 
-      if (!nameVal || !nameRegex.test(nameVal)) {
+      if (nameInput && (!nameVal || !nameRegex.test(nameVal))) {
         markInvalid(nameInput);
         valid = false;
       }
-      if (phoneVal && !phoneRegex.test(phoneVal)) {
+      if (phoneInput && phoneVal && !phoneRegex.test(phoneVal)) {
         markInvalid(phoneInput);
         valid = false;
       }
-      if (!emailVal || !emailRegex.test(emailVal)) {
+      if (emailInput && (!emailVal || !cfEmailRegex.test(emailVal))) {
         markInvalid(emailInput);
         valid = false;
       }

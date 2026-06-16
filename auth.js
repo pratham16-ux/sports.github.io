@@ -36,7 +36,7 @@
     setInterval(tick, 1000);
   }
 
-  /* ---- ROLE TOGGLE (Member / Coach — the "two options") ---- */
+  /* ---- ROLE TOGGLE (Member / Coach) ---- */
   const roleToggle = document.querySelector('.role-toggle');
   const roleBtns = document.querySelectorAll('.role-btn');
   const roleNameEls = document.querySelectorAll('.role-name');
@@ -117,7 +117,6 @@
     if (!el) return;
     el.setAttribute('maxlength', '16');
     el.addEventListener('input', () => {
-      // Strip anything that isn't a letter, space, or hyphen
       const cleaned = el.value.replace(/[^A-Za-z\s\-]/g, '');
       if (el.value !== cleaned) el.value = cleaned;
     });
@@ -137,7 +136,6 @@
   /* ---- VALIDATION HELPERS ---- */
 
   function isValidEmail(value) {
-    // RFC-aligned: local@domain.tld — rejects missing @, missing dot in domain, consecutive dots, etc.
     return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim()) &&
            !/\.{2,}/.test(value) &&
            !value.trim().startsWith('.') &&
@@ -152,7 +150,6 @@
       field.style.borderColor = '';
     }, 600);
 
-    // Show inline error hint if one exists next to the field
     let hint = field.parentElement.querySelector('.field-error');
     if (!hint) {
       hint = document.createElement('span');
@@ -164,9 +161,99 @@
     setTimeout(() => { if (hint) hint.textContent = ''; }, 3000);
   }
 
-  /* ---- FORM SUBMIT: VALIDATION + SIGNUP REDIRECT ---- */
+  /* ---- PASSWORD STRENGTH SCORER (shared util) ---- */
+  function getPasswordScore(val) {
+    let score = 0;
+    if (val.length >= 6)  score++;
+    if (val.length >= 10) score++;
+    if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    return score; // 0–4
+  }
+
+  /* ---- SIGN-IN VALIDATION (called by inline handleSignIn in signin.html) ---- */
+  window.handleSignIn = function (e) {
+    e.preventDefault();
+    const form = e.target;
+    let valid = true;
+
+    /* 1. Email presence + format */
+    const emailEl = document.getElementById('email');
+    if (!emailEl.value.trim()) {
+      markInvalid(emailEl, 'Email is required');
+      valid = false;
+    } else if (!isValidEmail(emailEl.value)) {
+      markInvalid(emailEl, 'Enter a valid email address');
+      valid = false;
+    }
+
+    /* 2. Password presence + minimum strength (score must be >= 2 = "Okay") */
+    const passEl = document.getElementById('password');
+    if (!passEl.value) {
+      markInvalid(passEl, 'Password is required');
+      valid = false;
+    } else {
+      const score = getPasswordScore(passEl.value);
+      if (score < 2) {
+        // Score 0 → "Too short" | Score 1 → "Weak"
+        const msg = score === 0
+          ? 'Password too short — use at least 6 characters'
+          : 'Password too weak — add uppercase letters and numbers';
+        markInvalid(passEl, msg);
+        valid = false;
+      }
+    }
+
+    /* 3. "Remember me" checkbox — must be checked to proceed */
+    const rememberEl = form.querySelector('input[name="remember"]');
+    if (rememberEl && !rememberEl.checked) {
+      // Surface error next to the checkbox label
+      let hint = rememberEl.closest('label').querySelector('.field-error');
+      if (!hint) {
+        hint = document.createElement('span');
+        hint.className = 'field-error';
+        hint.style.cssText = 'font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-left:6px;';
+        rememberEl.closest('label').appendChild(hint);
+      }
+      hint.textContent = 'Required to sign in';
+      setTimeout(() => { if (hint) hint.textContent = ''; }, 3000);
+
+      // Also shake the label row
+      const labelRow = rememberEl.closest('.form-row-between');
+      if (labelRow) {
+        labelRow.classList.add('shake');
+        setTimeout(() => labelRow.classList.remove('shake'), 600);
+      }
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    /* ---- All checks passed — proceed ---- */
+    const email = emailEl.value.trim();
+    const role = document.documentElement.getAttribute('data-role');
+    sessionStorage.setItem('sc_email', email);
+    sessionStorage.setItem('sc_role', role);
+    sessionStorage.setItem('sc_name',
+      email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+    );
+
+    showToastAndRedirect(role === 'coach' ? 'coach-dashboard.html' : 'member-dashboard.html');
+  };
+
+  function showToastAndRedirect(url) {
+    let toast = document.createElement('div');
+    toast.className = 'auth-toast';
+    toast.innerHTML = '<span class="dot"></span><span class="toast-msg">Access granted — loading dashboard…</span>';
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('show'));
+    setTimeout(() => { window.location.href = url; }, 1600);
+  }
+
+  /* ---- FORM SUBMIT: SIGNUP ONLY (signin handled by handleSignIn above) ---- */
   document.querySelectorAll('.auth-form').forEach((form) => {
-    const isSignup = !!form.querySelector('#fname'); // signup has fname; signin does not
+    const isSignup = !!form.querySelector('#fname');
+    if (!isSignup) return; // signin form uses handleSignIn — skip here
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -180,56 +267,72 @@
         }
       });
 
-      if (isSignup) {
-        /* 2. First name — letters only, 1–16 chars */
-        const fname = document.getElementById('fname');
-        if (fname && fname.value.trim()) {
-          if (!/^[A-Za-z\s\-]{1,16}$/.test(fname.value.trim())) {
-            valid = false;
-            markInvalid(fname, 'Letters only, max 16 characters');
-          }
+      /* 2. First name */
+      const fname = document.getElementById('fname');
+      if (fname && fname.value.trim()) {
+        if (!/^[A-Za-z\s\-]{1,16}$/.test(fname.value.trim())) {
+          valid = false;
+          markInvalid(fname, 'Letters only, max 16 characters');
         }
+      }
 
-        /* 3. Last name — letters only, 1–16 chars */
-        const lname = document.getElementById('lname');
-        if (lname && lname.value.trim()) {
-          if (!/^[A-Za-z\s\-]{1,16}$/.test(lname.value.trim())) {
-            valid = false;
-            markInvalid(lname, 'Letters only, max 16 characters');
-          }
+      /* 3. Last name */
+      const lname = document.getElementById('lname');
+      if (lname && lname.value.trim()) {
+        if (!/^[A-Za-z\s\-]{1,16}$/.test(lname.value.trim())) {
+          valid = false;
+          markInvalid(lname, 'Letters only, max 16 characters');
         }
+      }
 
-        /* 4. Phone — exactly 10 digits */
-        const phone = document.getElementById('phone');
-        if (phone && phone.value.trim()) {
-          const digits = phone.value.replace(/\D/g, '');
-          if (digits.length !== 10) {
-            valid = false;
-            markInvalid(phone, 'Enter a valid 10-digit number');
-          }
+      /* 4. Phone */
+      const phone = document.getElementById('phone');
+      if (phone && phone.value.trim()) {
+        const digits = phone.value.replace(/\D/g, '');
+        if (digits.length !== 10) {
+          valid = false;
+          markInvalid(phone, 'Enter a valid 10-digit number');
         }
+      }
 
-        /* 5. Email — stricter format check */
-        const email = document.getElementById('email');
-        if (email && email.value.trim()) {
-          if (!isValidEmail(email.value)) {
-            valid = false;
-            markInvalid(email, 'Enter a valid email address');
-          }
+      /* 5. Email */
+      const email = document.getElementById('email');
+      if (email && email.value.trim()) {
+        if (!isValidEmail(email.value)) {
+          valid = false;
+          markInvalid(email, 'Enter a valid email address');
+        }
+      }
+
+      /* 6. Password strength — must score >= 2 (Okay or better) */
+      const passEl = document.getElementById('password');
+      if (passEl && passEl.value) {
+        const score = getPasswordScore(passEl.value);
+        if (score < 2) {
+          valid = false;
+          const msg = score === 0
+            ? 'Password too short — use at least 6 characters'
+            : 'Password too weak — add uppercase letters and numbers';
+          markInvalid(passEl, msg);
+        }
+      }
+
+      /* 7. Confirm password — must match password exactly */
+      const confirmEl = document.getElementById('confirm');
+      if (confirmEl && passEl) {
+        if (!confirmEl.value) {
+          valid = false;
+          markInvalid(confirmEl, 'Please confirm your password');
+        } else if (confirmEl.value !== passEl.value) {
+          valid = false;
+          markInvalid(confirmEl, 'Passwords do not match');
         }
       }
 
       if (!valid) return;
 
-      /* All good — show toast then redirect */
-      if (isSignup) {
-        showToast(form.dataset.success || 'Account created — check your email to confirm…');
-        setTimeout(() => {
-          window.location.href = 'signin.html';
-        }, 2000); // short delay so user sees the toast
-      } else {
-        showToast(form.dataset.success || 'Welcome back — redirecting to your dashboard…');
-      }
+      showToast(form.dataset.success || 'Account created — check your email to confirm…');
+      setTimeout(() => { window.location.href = 'signin.html'; }, 2000);
     });
   });
 
