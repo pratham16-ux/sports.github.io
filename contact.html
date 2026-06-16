@@ -3,11 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Contact Stackly Sports Club — reach us by phone, email, or visit us in Hubballi, Karnataka. Book a free trial week today.">
 <title>Contact Us — Stackly Sports Club</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://wsrv.nl">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="inner.css">
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
 <div class="cursor-glow"></div>
@@ -39,7 +42,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 </nav>
 
 <!-- SECTION 1: HERO -->
-<section class="page-hero" style="--hero-img:url('https://wsrv.nl/?url=images.unsplash.com/photo-1577471488278-16eec37ffcc2&w=1400&output=webp&q=60&fit=cover')">
+<section class="page-hero" style="--hero-img:url(https://wsrv.nl/?url=images.unsplash.com/photo-1577471488278-16eec37ffcc2&w=1400&output=webp&q=60&fit=cover)">
   <div class="page-hero-overlay"></div>
   <div class="section-inner page-hero-content">
     <div class="page-hero-eyebrow reveal">Get In Touch</div>
@@ -96,7 +99,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
       <div class="contact-form-wrap reveal-right">
         <div class="section-eyebrow">Send a Message</div>
         <h2 class="section-title" style="margin-bottom:28px;">START YOUR<br><span class="accent">JOURNEY</span></h2>
-        <form class="contact-form">
+        <form class="contact-form" action="#" method="post" novalidate>
           <div class="form-row">
             <div class="form-group">
               <label for="cf-name">Full Name</label>
@@ -115,7 +118,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
             <div class="form-group">
               <label for="cf-sport">Interested Sport</label>
               <select id="cf-sport" name="sport">
-                <option value="">Select a sport</option>
+                <option value="" disabled selected>Select a sport</option>
                 <option>Cricket</option>
                 <option>Football</option>
                 <option>Basketball</option>
@@ -143,7 +146,20 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 <section style="padding:0 0 100px;">
   <div class="section-inner">
     <div class="reveal" style="border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);">
-      <iframe src="https://www.google.com/maps?q=Hubballi,Karnataka,India&output=embed" width="100%" height="420" style="border:0;display:block;filter:grayscale(0.3) invert(0.9) contrast(0.85);" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Stackly Sports Club Location"></iframe>
+      <a href="https://www.google.com/maps?q=Hubballi,Karnataka,India" target="_blank" rel="noopener noreferrer" aria-label="View Stackly Sports Club on Google Maps" style="display:block;position:relative;height:420px;overflow:hidden;">
+        <img
+          src="https://wsrv.nl/?url=maps.googleapis.com/maps/api/staticmap?center=Hubballi,Karnataka,India&zoom=14&size=1200x420&scale=2&maptype=roadmap&markers=color:red%7Clabel:S%7CHubballi,Karnataka,India&style=feature:all|element:labels.text.fill|color:0x9ca3af&style=feature:all|element:geometry|color:0x1f2937&style=feature:water|element:geometry|color:0x111827&key=AIzaSyD-placeholder&output=webp&q=80&w=1200&h=420&fit=cover&we=false&errorredirect=https://wsrv.nl/&default=https://wsrv.nl/?url=images.unsplash.com/photo-1524661135-423995f22d0b&w=1200&h=420&output=webp&q=70&fit=cover"
+          onerror="this.onerror=null;this.src='https://wsrv.nl/?url=images.unsplash.com/photo-1524661135-423995f22d0b&w=1200&h=420&output=webp&q=70&fit=cover'"
+          alt="Map showing Stackly Sports Club location in Hubballi, Karnataka"
+          width="1200" height="420"
+          loading="lazy"
+          draggable="false"
+          style="width:100%;height:420px;object-fit:cover;display:block;filter:grayscale(0.3) contrast(0.85);transition:filter 0.3s;">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);opacity:0;transition:opacity 0.3s;"
+             onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0'">
+          <span style="color:#fff;font-family:var(--font-heading);font-size:14px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;background:var(--primary);padding:12px 28px;border-radius:4px;">View on Google Maps ↗</span>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -228,6 +244,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     </div>
   </div>
 </footer>
-<script src="main.js"></script>
+<script src="main.js" defer></script>
 </body>
 </html>
