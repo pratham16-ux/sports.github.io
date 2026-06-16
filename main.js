@@ -128,8 +128,8 @@
 
   /* ---- HERO SLIDER ---- */
   const slider = document.querySelector('.hero-slider');
-  if (slider) {
-    const slides = slider.querySelectorAll('.slide');
+  const slides = slider ? slider.querySelectorAll('.slide') : [];
+  if (slider && slides.length) {
     const dots = slider.querySelectorAll('.slider-dot');
     const prevBtn = slider.querySelector('.slider-prev');
     const nextBtn = slider.querySelector('.slider-next');
@@ -137,10 +137,10 @@
     let sliderInterval;
 
     function goTo(idx) {
-      slides[current].classList.remove('active');
+      slides[current]?.classList.remove('active');
       dots[current]?.classList.remove('active');
       current = (idx + slides.length) % slides.length;
-      slides[current].classList.add('active');
+      slides[current]?.classList.add('active');
       dots[current]?.classList.add('active');
     }
 
@@ -153,7 +153,9 @@
     prevBtn?.addEventListener('click', () => { stopAutoplay(); goTo(current - 1); startAutoplay(); });
     dots.forEach((d, i) => d.addEventListener('click', () => { stopAutoplay(); goTo(i); startAutoplay(); }));
 
-    if (slides.length) { slides[0].classList.add('active'); dots[0]?.classList.add('active'); startAutoplay(); }
+    slides[0].classList.add('active');
+    dots[0]?.classList.add('active');
+    startAutoplay();
 
     window.addEventListener('beforeunload', stopAutoplay);
   }
@@ -196,11 +198,12 @@
   document.querySelectorAll('.tabs-nav button').forEach(btn => {
     btn.addEventListener('click', () => {
       const parent = btn.closest('.tabs');
-      if (!parent) return;
+      const tabId = btn.dataset.tab;
+      if (!parent || !tabId) return;
       parent.querySelectorAll('.tabs-nav button').forEach(b => b.classList.remove('active'));
       parent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
-      parent.querySelector('#' + btn.dataset.tab)?.classList.add('active');
+      parent.querySelector('#' + tabId)?.classList.add('active');
     });
   });
 
@@ -277,13 +280,11 @@
       setTimeout(() => el.classList.remove('shake'), 400);
     };
 
-    // Letters & spaces only, capped at 16 chars as the user types
     nameInput?.addEventListener('input', () => {
       nameInput.value = nameInput.value.replace(/[^A-Za-z\s]/g, '').slice(0, 16);
       nameInput.classList.remove('input-error');
     });
 
-    // Digits only, capped at 10 as the user types
     phoneInput?.addEventListener('input', () => {
       phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 10);
       phoneInput.classList.remove('input-error');
